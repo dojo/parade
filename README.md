@@ -1,6 +1,8 @@
 # @dojo/sandpit
 
-![Alt text](/sandpit.jpg?raw=true "sandpit")
+![sandpit](/sandpit.jpg?raw=true "sandpit")
+
+![screenshot](/screenshot.png?raw=true "screenshot")
 
 ## Usage
 
