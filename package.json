@@ -11,7 +11,7 @@
     "test:all": "dojo build --mode unit && dojo build --mode functional && dojo test --all --config local"
   },
   "dependencies": {
-    "@dojo/cli-build-widget": "^7.0.0-alpha.2",
+    "@dojo/cli-build-widget": "^7.0.0-alpha.3",
     "@dojo/framework": "next",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "next",

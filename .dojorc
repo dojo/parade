@@ -2,6 +2,14 @@
 	"build-widget": {
 		"widgets": [
 			"src/index"
-		]
+		],
+		"externals": {
+			"outputPath": ".",
+			"dependencies": [
+				{
+					"from": ".sandpit.dojorc"
+				}
+			]
+		}
 	}
 }
