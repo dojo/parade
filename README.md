@@ -8,17 +8,6 @@
 npm install @dojo/sandpit
 ```
 
-
-#### **`main.tsx`**
-```tsx
-import sandpit from '@dojo/sandpit';
-
-// import your sandpit config
-import config from './config';
-
-sandpit({ config });
-```
-
 #### **`.dojorc`**
 ```json
 {
@@ -81,4 +70,14 @@ export default {
       }
     }
   }
+```
+
+#### **`main.tsx`**
+```tsx
+import sandpit from '@dojo/sandpit';
+
+// import your sandpit config
+import config from './config';
+
+sandpit({ config });
 ```
