@@ -31,8 +31,8 @@ sandpit({ config });
 import dojoTheme from '@dojo/themes/dojo';
 import '@dojo/themes/dojo/index.css';
 
-import BasicAccordionPane from './widgets/accordion-pane/Basic';
-import Exclusive from './widgets/accordion-pane/Exclusive';
+import BasicAccordion from './widgets/accordion/Basic';
+import Exclusive from './widgets/accordion/Exclusive';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
@@ -43,8 +43,8 @@ export default {
   codesandbox: {},
   tests,
   themes: [ dojoTheme ],
-  'widgets': {
-    'accordion-pane': {
+  widgets: {
+    accordion: {
       examples: [
         {
           filename: 'Exclusive',
@@ -55,7 +55,7 @@ export default {
       overview: {
         example: {
           filename: 'Basic',
-          module: BasicAccordionPane
+          module: BasicAccordion
         }
       }
     },
