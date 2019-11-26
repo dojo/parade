@@ -1,0 +1,36 @@
+{
+  "name": "@dojo/sandpit",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "dojo build --mode dev --watch --serve",
+    "build": "dojo build --mode dist",
+    "build:dev": "dojo build --mode dev",
+    "test": "dojo test",
+    "test:unit": "dojo build --mode unit && dojo test --unit --config local",
+    "test:functional": "dojo build --mode functional && dojo test --functional --config local",
+    "test:all": "dojo build --mode unit && dojo build --mode functional && dojo test --all --config local"
+  },
+  "dependencies": {
+    "@dojo/cli-build-widget": "^7.0.0-alpha.2",
+    "@dojo/framework": "next",
+    "@dojo/themes": "^6.0.0",
+    "@dojo/widgets": "next",
+    "canonical-path": "1.0.0",
+    "cldr-data": "36.0.0",
+    "intern": "4.6.0",
+    "postcss": "7.0.21",
+    "prismjs": "1.17.1",
+    "rehype-stringify": "6.0.0",
+    "remark-parse": "7.0.1",
+    "remark-rehype": "5.0.0",
+    "ts-morph": "4.2.0",
+    "tslib": "~1.9.1",
+    "unified": "8.4.1"
+  },
+  "devDependencies": {
+    "@dojo/cli": "^6.0.0",
+    "@dojo/cli-build-app": "next",
+    "@types/node": "~9.6.5",
+    "typescript": "~3.4.5"
+  }
+}
