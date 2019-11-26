@@ -16,8 +16,7 @@ import sandpit from '@dojo/sandpit';
 // import your sandpit config
 import config from './config';
 
-// path to your tests
-sandpit({ config, tests });
+sandpit({ config });
 ```
 
 #### **`.dojorc`**
