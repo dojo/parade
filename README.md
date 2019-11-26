@@ -23,7 +23,7 @@ sandpit({ config, tests });
 #### **`.dojorc`**
 ```json
 {
-	"extends": "./node_modules/@dojo/example-runner/.dojorc"
+  "extends": "./node_modules/@dojo/example-runner/.dojorc"
 }
 ```
 
@@ -41,45 +41,45 @@ import ToggleButton from './widgets/button/ToggleButton';
 const tests = (require as any).context('./', true, /\.spec\.ts(x)?$/);
 
 export default {
-	codesandbox: {},
-	tests,
-	themes: [ dojoTheme ],
-	'widgets': {
-		'accordion-pane': {
-			examples: [
-				{
-					filename: 'Exclusive',
-					module: Exclusive
-				}
-			],
-			filename: 'index',
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicAccordionPane
-				}
-			}
-		},
-		button: {
-			examples: [
-				{
-					filename: 'DisabledSubmit',
-					module: DisabledSubmit,
-					title: 'Disabled Submit Button'
-				},
-				{
-					filename: 'ToggleButton',
-					module: ToggleButton,
-					title: 'Toggle Button'
-				}
-			],
-			filename: 'index',
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicButton
-				}
-			}
-		}
-	}
+  codesandbox: {},
+  tests,
+  themes: [ dojoTheme ],
+  'widgets': {
+    'accordion-pane': {
+      examples: [
+        {
+          filename: 'Exclusive',
+          module: Exclusive
+        }
+      ],
+      filename: 'index',
+      overview: {
+        example: {
+          filename: 'Basic',
+          module: BasicAccordionPane
+        }
+      }
+    },
+    button: {
+      examples: [
+        {
+          filename: 'DisabledSubmit',
+          module: DisabledSubmit,
+          title: 'Disabled Submit Button'
+        },
+        {
+          filename: 'ToggleButton',
+          module: ToggleButton,
+          title: 'Toggle Button'
+        }
+      ],
+      filename: 'index',
+      overview: {
+        example: {
+          filename: 'Basic',
+          module: BasicButton
+        }
+      }
+    }
+  }
 ```
