@@ -29,6 +29,7 @@ import ToggleButton from './widgets/button/ToggleButton';
 const tests = (require as any).context('./', true, /\.spec\.ts(x)?$/);
 
 export default {
+  header: 'My Widget Library',
   codesandbox: {},
   tests,
   themes: [ dojoTheme ],
