@@ -9,9 +9,7 @@ npm install @dojo/sandpit
 ```
 
 
-```bash
-main.tsx
-```
+#### **`main.tsx`**
 ```tsx
 import sandpit from '@dojo/sandpit';
 // import your sandpit config
@@ -26,9 +24,7 @@ const tests = (require as any).context('./', true, /\.spec\.ts(x)?$/);
 sandpit({ configs, themes: [dojo], tests });
 ```
 
-```bash
-.dojorc
-```
+#### **`.dojorc`**
 ```json
 {
 	"extends": "./node_modules/@dojo/example-runner/.dojorc"
