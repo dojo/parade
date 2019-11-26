@@ -13,15 +13,11 @@ npm install @dojo/sandpit
 ```tsx
 import sandpit from '@dojo/sandpit';
 
-// import any themes
-import dojo from '@dojo/themes/dojo';
-import '@dojo/themes/dojo/index.css';
-
 // import your sandpit config
-import config from './path/to/your/config';
+import config from './config';
 
 // path to your tests
-sandpit({ config, themes: [dojo], tests });
+sandpit({ config, tests });
 ```
 
 #### **`.dojorc`**
@@ -31,7 +27,11 @@ sandpit({ config, themes: [dojo], tests });
 }
 ```
 
+#### **`config.tsx`**
 ```tsx
+import dojoTheme from '@dojo/themes/dojo';
+import '@dojo/themes/dojo/index.css';
+
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
@@ -43,6 +43,7 @@ const tests = (require as any).context('./', true, /\.spec\.ts(x)?$/);
 export default {
 	codesandbox: {},
 	tests,
+	themes: [ dojoTheme ],
 	'widgets': {
 		'accordion-pane': {
 			examples: [
