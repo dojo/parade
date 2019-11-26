@@ -11,7 +11,7 @@ npm install @dojo/sandpit
 #### **`.dojorc`**
 ```json
 {
-  "extends": "./node_modules/@dojo/example-runner/.dojorc"
+  "extends": "./node_modules/@dojo/sandpit/.dojorc"
 }
 ```
 
