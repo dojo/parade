@@ -7,7 +7,7 @@
     "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",
     "clean": "rm -rf ./output/dist && rm -rf output",
     "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
-	"release": "dojo-release"
+    "release": "dojo-release"
   },
   "dependencies": {
     "@dojo/cli-build-widget": "^7.0.0-alpha.3",
