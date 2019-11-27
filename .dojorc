@@ -17,6 +17,10 @@
 				{
 					"from": "src/parade.json",
 					"to": "parade.json"
+				},
+				{
+					"from": "intern",
+					"to": "intern"
 				}
 			]
 		}
