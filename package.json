@@ -2,6 +2,8 @@
   "name": "@dojo/parade",
   "version": "0.0.3-pre",
   "scripts": {
+    "dev": "dojo build app -m dev -w -s",
+    "start": "npm run dev",
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
     "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",

@@ -40,7 +40,7 @@ function getWidgetProperties(propsInterface: InterfaceDeclaration): PropertyInte
 
 export default function(config: { [index: string]: string }) {
 	const project = new Project({
-		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
+		tsConfigFilePath: path.join(process.cwd(), 'tsconfig.json')
 	});
 
 	return Object.keys(config).reduce((props, widgetName): {
