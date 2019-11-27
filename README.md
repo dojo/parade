@@ -13,7 +13,7 @@ npm install @dojo/sandpit
 #### **`.dojorc`**
 ```json
 {
-  "extends": "./node_modules/@dojo/sandpit/sandpit.dojorc"
+  "extends": "./node_modules/@dojo/sandpit/sandpit.json"
 }
 ```
 
