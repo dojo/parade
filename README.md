@@ -24,6 +24,17 @@ npm install @dojo/parade
 }
 ```
 
+#### **`main.tsx`**
+```tsx
+import parade from '@dojo/parade';
+
+// import your parade config
+import config from './config';
+
+parade({ config });
+```
+
+### Example config:
 #### **`config.tsx`**
 ```tsx
 import dojoTheme from '@dojo/themes/dojo';
@@ -80,14 +91,4 @@ export default {
       }
     }
   }
-```
-
-#### **`main.tsx`**
-```tsx
-import parade from '@dojo/parade';
-
-// import your parade config
-import config from './config';
-
-parade({ config });
 ```
