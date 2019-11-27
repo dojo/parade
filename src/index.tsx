@@ -5,6 +5,8 @@ import Registry from '@dojo/framework/core/Registry';
 import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 
+import './main.css'
+
 import routes from './routes';
 import App from './App';
 
