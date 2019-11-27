@@ -1,6 +1,6 @@
 {
   "name": "@dojo/parade",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "scripts": {
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
