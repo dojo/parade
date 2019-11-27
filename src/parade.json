@@ -44,7 +44,7 @@
 					"to": "intern/index.html"
 				},
 				{
-					"from": "node_modules/@dojo/sandpit/intern",
+					"from": "node_modules/@dojo/parade/intern",
 					"to": "intern"
 				}
 			]

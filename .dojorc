@@ -7,8 +7,8 @@
 			"outputPath": ".",
 			"dependencies": [
 				{
-					"from": "src/sandpit.json",
-					"to": "sandpit.json"
+					"from": "src/parade.json",
+					"to": "parade.json"
 				}
 			]
 		}

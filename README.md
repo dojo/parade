@@ -1,19 +1,19 @@
-# @dojo/sandpit
+# @dojo/parade
 
-![sandpit](/sandpit.jpg?raw=true "sandpit")
+![parade](/parade.jpg?raw=true "parade")
 
 ![screenshot](/screenshot.png?raw=true "screenshot")
 
 ## Usage
 
 ```bash
-npm install @dojo/sandpit
+npm install @dojo/parade
 ```
 
 #### **`.dojorc`**
 ```json
 {
-  "extends": "./node_modules/@dojo/sandpit/sandpit.json"
+  "extends": "./node_modules/@dojo/parade/parade.json"
 }
 ```
 
@@ -77,10 +77,10 @@ export default {
 
 #### **`main.tsx`**
 ```tsx
-import sandpit from '@dojo/sandpit';
+import parade from '@dojo/parade';
 
-// import your sandpit config
+// import your parade config
 import config from './config';
 
-sandpit({ config });
+parade({ config });
 ```
