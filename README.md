@@ -1,5 +1,14 @@
 # @dojo/parade
 
+A library to show off your widget library.
+
+* Show running demos
+* Syntax highlighted example code
+* Auto documented widget properties
+* Auto documented theme class hooks
+* Run on codesandbox
+* Run unit tests
+
 ![screenshot](/screenshot.png?raw=true "screenshot")
 
 ## Usage
