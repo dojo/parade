@@ -1,14 +1,13 @@
 {
-  "name": "@dojo/sandpit",
+  "name": "@dojo/parade",
   "version": "1.0.0",
   "scripts": {
-    "dev": "dojo build --mode dev --watch --serve",
-    "build": "dojo build --mode dist",
-    "build:dev": "dojo build --mode dev",
-    "test": "dojo test",
-    "test:unit": "dojo build --mode unit && dojo test --unit --config local",
-    "test:functional": "dojo build --mode functional && dojo test --functional --config local",
-    "test:all": "dojo build --mode unit && dojo build --mode functional && dojo test --all --config local"
+    "dist": "dojo build widget -t lib",
+    "dist:legacy": "dojo build widget -t lib --legacy",
+    "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",
+    "clean": "rm -rf ./output/dist && rm -rf output",
+    "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
+	"release": "dojo-release"
   },
   "dependencies": {
     "@dojo/cli-build-widget": "^7.0.0-alpha.3",
@@ -30,7 +29,9 @@
   "devDependencies": {
     "@dojo/cli": "^6.0.0",
     "@dojo/cli-build-app": "next",
+    "@dojo/scripts": "^4.0.2",
     "@types/node": "~9.6.5",
+    "shx": "^0.3.2",
     "typescript": "~3.4.5"
   }
 }

@@ -7,6 +7,14 @@
 			"outputPath": ".",
 			"dependencies": [
 				{
+					"from": "package.json",
+					"to": "package.json"
+				},
+				{
+					"from": "README.md",
+					"to": "README.md"
+				},
+				{
 					"from": "src/parade.json",
 					"to": "parade.json"
 				}
