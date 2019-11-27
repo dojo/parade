@@ -8,7 +8,8 @@ import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import routes from './routes';
 import App from './App';
 
-export default ({ configs, themes = [], domNode, tests }: { configs: any, themes?: any[], domNode: HTMLElement, tests: any }) => {
+export default ({ config }: { config: any }) => {
+	const { themes, tests } = config;
 	if (global.intern) {
 		const url = new URL(window.location.href);
 		const params = url.searchParams;
@@ -24,12 +25,12 @@ export default ({ configs, themes = [], domNode, tests }: { configs: any, themes
 			has('docs') === 'false' ? false : has('docs') === 'true' ? true : has('docs')
 		);
 		const registry = new Registry();
-		themes.map((theme) => {
+		themes.map((theme: any) => {
 			registerThemeInjector(theme, registry);
 		});
 		registerRouterInjector(routes, registry);
 
-		const r = renderer(() => <App includeDocs={includeDocs} configs={configs} />);
-		r.mount({ registry, domNode });
+		const r = renderer(() => <App includeDocs={includeDocs} configs={config} />);
+		r.mount({ registry, domNode: document.getElementById('app')! });
 	}
 }
