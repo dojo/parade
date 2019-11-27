@@ -1,7 +1,5 @@
 # @dojo/parade
 
-![parade](/parade.jpg?raw=true "parade")
-
 ![screenshot](/screenshot.png?raw=true "screenshot")
 
 ## Usage
