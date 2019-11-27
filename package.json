@@ -10,7 +10,7 @@
     "release": "dojo-release"
   },
   "dependencies": {
-    "@dojo/cli-build-widget": "^7.0.0-alpha.3",
+    "@dojo/cli-build-widget": "next",
     "@dojo/framework": "next",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "next",
