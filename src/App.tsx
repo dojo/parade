@@ -15,10 +15,34 @@ import PropertyTable from './PropertyTable';
 import * as css from './App.m.css';
 import Landing from './Landing';
 
-function getWidgetFileNames(config: any): { [index: string]: string } {
+function getWidgetFileNames(config: any, widgetPathFunc: any): { [index: string]: string } {
 	return Object.keys(config).reduce((newConfig, widget) => {
-		return { ...newConfig, [widget]: config[widget].filename || 'index' };
+		return { ...newConfig, [widget]: widgetPathFunc(widget, config[widget].filename) };
 	}, {});
+}
+
+function getReadmeFileNames(config: any, readmePathFunc: any): string[] {
+	const filenames: string[] = [];
+	Object.keys(config).forEach((key) => {
+		filenames.push(readmePathFunc(key));
+	});
+	return filenames;
+}
+
+function getExampleFileNames(config: any, examplePathFunc: any): string[] {
+	const filenames: string[] = [];
+	Object.keys(config).forEach((key) => {
+		const widget = config[key];
+		if (widget.overview && widget.overview.example) {
+			filenames.push(examplePathFunc(key, widget.overview.example.filename));
+		}
+		if (widget.examples) {
+			widget.examples.forEach((example: any) => {
+				filenames.push(examplePathFunc(key, example.filename));
+			});
+		}
+	});
+	return filenames;
 }
 
 export function formatWidgetName(widget: string) {
@@ -30,7 +54,7 @@ export function formatWidgetName(widget: string) {
 
 interface AppProperties {
 	includeDocs: boolean;
-	configs: any;
+	config: any;
 }
 
 const factory = create({ block }).properties<AppProperties>();
@@ -40,16 +64,19 @@ interface Content {
 }
 
 export default factory(function App({ properties, middleware: { block } }) {
-	const { includeDocs, configs } = properties();
+	const { includeDocs, config } = properties();
+	const configs = config.widgets;
 	const widgets = Object.keys(configs).sort();
-	const widgetFilenames = getWidgetFileNames(configs);
+	const widgetFilenames = getWidgetFileNames(configs, config.widgetPath);
+	const exampleFilenames = getExampleFileNames(configs, config.examplePath);
+	const readmeFilenames = getReadmeFileNames(configs, config.readmePath);
 	let widgetReadmeContent: Content = {};
 	let widgetExampleContent: Content = {};
 	let widgetProperties: { [index: string]: PropertyInterface[] } = {};
 	let widgetThemeClasses: { [index: string]: { [index: string]: string } } = {};
 	if (includeDocs) {
-		widgetReadmeContent = block(readme)() || {};
-		widgetExampleContent = block(code)() || {};
+		widgetReadmeContent = block(readme)(readmeFilenames) || {};
+		widgetExampleContent = block(code)(exampleFilenames) || {};
 		widgetProperties = block(getWidgetProperties)(widgetFilenames) || {};
 		widgetThemeClasses = block(getTheme)(widgetFilenames) || {};
 	}
@@ -65,7 +92,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 						const widgetConfig = configs[widgetName];
 						const { overview, examples = [] } = widgetConfig;
 						const isBasic = exampleName === 'basic';
-						const readmeContent = widgetReadmeContent[widgetName];
+						const readmeContent = widgetReadmeContent[config.readmePath(widgetName)];
 						const example = isBasic
 							? overview.example
 							: examples.find(
@@ -74,10 +101,8 @@ export default factory(function App({ properties, middleware: { block } }) {
 						if (!example) {
 							return null;
 						}
-						const widgetPath = `${widgetName}/${example.filename}`;
-						const content =
-							widgetExampleContent[`${widgetPath}.tsx`] ||
-							widgetExampleContent[`${widgetPath}.ts`];
+						const widgetPath = config.examplePath(widgetName, example.filename);
+						const content = widgetExampleContent[widgetPath];
 						const propertyInterface = widgetProperties[widgetName];
 						const themeClasses = widgetThemeClasses[widgetName];
 						return (

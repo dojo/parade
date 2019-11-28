@@ -1,21 +1,19 @@
-import * as glob from 'glob';
 import * as fs from 'fs';
-import * as path from 'path';
+import * as path from 'canonical-path';
 const Prism = require('prismjs');
 const loadLanguages = require('prismjs/components/');
 
-function globExamples() {
-	const files = glob.sync(path.join(__dirname, 'widgets/**/*'), { nodir: true });
-	const prefix = path.join(__dirname, 'widgets');
-	return files.map((file) => file.replace(`${prefix}/`, ''));
-}
-
-export default function() {
+export default function(exampleFilenames: any) {
 	loadLanguages(['tsx']);
-	const examples = globExamples();
-	return examples.reduce((content, widget) => {
-		const code = fs.readFileSync(path.join(__dirname, 'widgets', widget), 'utf8');
-		content = { ...content, [widget]: Prism.highlight(code, Prism.languages.tsx, 'tsx') };
-		return content;
-	}, {});
+	const examples: any = {};
+	exampleFilenames.forEach((exampleFilename: string) => {
+		const ts = path.join(process.cwd(), exampleFilename);
+		let code = '';
+		if (fs.existsSync(ts)) {
+			code = fs.readFileSync(ts, 'utf-8');
+		}
+		const content = Prism.highlight(code, Prism.languages.tsx, 'tsx');
+		examples[exampleFilename] = content;
+	});
+	return examples;
 }

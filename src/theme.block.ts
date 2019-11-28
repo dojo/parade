@@ -9,24 +9,20 @@ interface ThemeInterface {
 
 export default function(config: { [index: string]: string }): ThemeInterface {
 	const project = new Project({
-		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
+		tsConfigFilePath: path.join(process.cwd(), 'tsconfig.json')
 	});
 	return Object.keys(config).reduce((properties, widgetName) => {
 		const classHash = {} as any;
 		let comment = '';
-		const filename = config[widgetName] || 'index';
-		let sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.ts`);
-		if (!sourceFile) {
-			sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.tsx`);
-		}
+		const filename = config[widgetName];
+		const sourceFile = project.getSourceFile(filename);
 		if (sourceFile) {
 			const imports = sourceFile!.getImportDeclarations();
 			imports.forEach((importDeclaration) => {
 				const moduleSpecifierValue = importDeclaration.getModuleSpecifierValue();
 				const match = moduleSpecifierValue.match(/.*\/theme\/(.*\.m\.css)$/);
 				if (match) {
-					const cssFilename = match[1];
-					const root = postcss.parse(fs.readFileSync(`./src/theme/${cssFilename}`));
+					const root = postcss.parse(fs.readFileSync(path.resolve(path.dirname(filename), moduleSpecifierValue)));
 					root.walk((node) => {
 						if (node.type === 'comment') {
 							comment = node.text;

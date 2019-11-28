@@ -32,7 +32,7 @@ export default ({ config }: { config: any }) => {
 		});
 		registerRouterInjector(routes, registry);
 
-		const r = renderer(() => <App includeDocs={includeDocs} configs={config.widgets} />);
+		const r = renderer(() => <App includeDocs={includeDocs} config={config} />);
 		r.mount({ registry, domNode: document.getElementById('app')! });
 	}
 }

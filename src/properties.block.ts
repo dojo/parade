@@ -40,17 +40,14 @@ function getWidgetProperties(propsInterface: InterfaceDeclaration): PropertyInte
 
 export default function(config: { [index: string]: string }) {
 	const project = new Project({
-		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
+		tsConfigFilePath: path.join(process.cwd(), 'tsconfig.json')
 	});
 
 	return Object.keys(config).reduce((props, widgetName): {
 		[index: string]: PropertyInterface[];
 	} => {
-		const filename = config[widgetName] || 'index';
-		let sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.ts`);
-		if (!sourceFile) {
-			sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.tsx`);
-		}
+		const filename = config[widgetName];
+		const sourceFile = project.getSourceFile(filename);
 		if (!sourceFile) {
 			return props;
 		}
