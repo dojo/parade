@@ -46,11 +46,8 @@ export default function(config: { [index: string]: string }) {
 	return Object.keys(config).reduce((props, widgetName): {
 		[index: string]: PropertyInterface[];
 	} => {
-		const filename = config[widgetName] || 'index';
-		let sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.ts`);
-		if (!sourceFile) {
-			sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.tsx`);
-		}
+		const filename = config[widgetName];
+		const sourceFile = project.getSourceFile(filename);
 		if (!sourceFile) {
 			return props;
 		}

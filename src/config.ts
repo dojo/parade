@@ -5,9 +5,9 @@ import ButtonAdvanced from './example/ButtonAdvanced';
 
 export default {
 	themes: [ dojoTheme ],
-	readmePath: (widget: string) => `src/${widget}/README`,
-	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename}`,
-	examplePath: (widget: string, filename: string) => `src/example/${filename}`,
+	readmePath: (widget: string) => `src/${widget}/README.md`,
+	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename}.tsx`,
+	examplePath: (widget: string, filename: string) => `src/example/${filename}.tsx`,
 	widgets: {
 		button: {
 			filename: 'Button',

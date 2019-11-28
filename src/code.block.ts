@@ -7,13 +7,9 @@ export default function(exampleFilenames: any) {
 	loadLanguages(['tsx']);
 	const examples: any = {};
 	exampleFilenames.forEach((exampleFilename: string) => {
-		const ts = path.join(process.cwd(), `${exampleFilename}.ts`);
-		const tsx = path.join(process.cwd(), `${exampleFilename}.tsx`);
+		const ts = path.join(process.cwd(), exampleFilename);
 		let code = '';
-		if (fs.existsSync(tsx)) {
-			code = fs.readFileSync(tsx, 'utf-8');
-		}
-		else if (fs.existsSync(ts)) {
+		if (fs.existsSync(ts)) {
 			code = fs.readFileSync(ts, 'utf-8');
 		}
 		const content = Prism.highlight(code, Prism.languages.tsx, 'tsx');

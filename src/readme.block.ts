@@ -18,7 +18,7 @@ export default function(readmeFilenames: any) {
 	const readmes: any = {};
 	readmeFilenames.forEach((readmeFilename: string) => {
 		const readme = fs.readFileSync(
-			path.join(process.cwd(), `${readmeFilename}.md`),
+			path.join(process.cwd(), readmeFilename),
 			'utf8'
 		);
 		const content = markdown(readme);
