@@ -14,14 +14,15 @@ function markdown(content: string) {
 		.toString();
 }
 
-export default function(widgets: any) {
-	const markdowns = widgets.reduce((readmes: any, widget: string) => {
+export default function(readmeFilenames: any) {
+	const readmes: any = {};
+	readmeFilenames.forEach((readmeFilename: string) => {
 		const readme = fs.readFileSync(
-			path.join(process.cwd(), 'src', widget, 'README.md'),
+			path.join(process.cwd(), `${readmeFilename}.md`),
 			'utf8'
 		);
-		readmes = { ...readmes, [widget]: markdown(readme) };
-		return readmes;
-	}, {});
-	return markdowns;
+		const content = markdown(readme);
+		readmes[readmeFilename] = content;
+	});
+	return readmes;
 }

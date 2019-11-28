@@ -21,6 +21,14 @@ function getWidgetFileNames(config: any, widgetPathFunc: any): { [index: string]
 	}, {});
 }
 
+function getReadmeFileNames(config: any, readmePathFunc: any): string[] {
+	const filenames: string[] = [];
+	Object.keys(config).forEach((key) => {
+		filenames.push(readmePathFunc(key));
+	});
+	return filenames;
+}
+
 function getExampleFileNames(config: any, examplePathFunc: any): string[] {
 	const filenames: string[] = [];
 	Object.keys(config).forEach((key) => {
@@ -61,12 +69,13 @@ export default factory(function App({ properties, middleware: { block } }) {
 	const widgets = Object.keys(configs).sort();
 	const widgetFilenames = getWidgetFileNames(configs, config.widgetPath);
 	const exampleFilenames = getExampleFileNames(configs, config.examplePath);
+	const readmeFilenames = getReadmeFileNames(configs, config.readmePath);
 	let widgetReadmeContent: Content = {};
 	let widgetExampleContent: Content = {};
 	let widgetProperties: { [index: string]: PropertyInterface[] } = {};
 	let widgetThemeClasses: { [index: string]: { [index: string]: string } } = {};
 	if (includeDocs) {
-		widgetReadmeContent = block(readme)(Object.keys(widgetFilenames)) || {};
+		widgetReadmeContent = block(readme)(readmeFilenames) || {};
 		widgetExampleContent = block(code)(exampleFilenames) || {};
 		widgetProperties = block(getWidgetProperties)(widgetFilenames) || {};
 		widgetThemeClasses = block(getTheme)(widgetFilenames) || {};
@@ -83,7 +92,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 						const widgetConfig = configs[widgetName];
 						const { overview, examples = [] } = widgetConfig;
 						const isBasic = exampleName === 'basic';
-						const readmeContent = widgetReadmeContent[widgetName];
+						const readmeContent = widgetReadmeContent[config.readmePath(widgetName)];
 						const example = isBasic
 							? overview.example
 							: examples.find(
