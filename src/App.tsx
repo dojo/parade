@@ -34,11 +34,11 @@ function getExampleFileNames(config: any, examplePathFunc: any): string[] {
 	Object.keys(config).forEach((key) => {
 		const widget = config[key];
 		if (widget.overview && widget.overview.example) {
-			filenames.push(examplePathFunc(widget, widget.overview.example.filename));
+			filenames.push(examplePathFunc(key, widget.overview.example.filename));
 		}
 		if (widget.examples) {
 			widget.examples.forEach((example: any) => {
-				filenames.push(examplePathFunc(widget, example.filename));
+				filenames.push(examplePathFunc(key, example.filename));
 			});
 		}
 	});
