@@ -17,7 +17,6 @@
     "@dojo/widgets": "next"
   },
   "dependencies": {
-    "@dojo/cli-build-widget": "next",
     "canonical-path": "1.0.0",
     "cldr-data": "36.0.0",
     "intern": "4.6.0",
@@ -31,8 +30,9 @@
     "unified": "8.4.1"
   },
   "devDependencies": {
-    "@dojo/cli": "^6.0.0",
+    "@dojo/cli": "^7.0.0-alpha.1",
     "@dojo/cli-build-app": "next",
+    "@dojo/cli-build-widget": "next",
     "@dojo/framework": "next",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^6.0.0",
