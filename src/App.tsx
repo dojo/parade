@@ -21,6 +21,22 @@ function getWidgetFileNames(config: any): { [index: string]: string } {
 	}, {});
 }
 
+function getExampleFileNames(config: any): string[] {
+	const filenames: string[] = [];
+	Object.keys(config).forEach((key) => {
+		const widget = config[key];
+		if (widget.overview && widget.overview.example) {
+			filenames.push(widget.overview.example.filename);
+		}
+		if (widget.examples) {
+			widget.examples.forEach((example: any) => {
+				filenames.push(example.filename);
+			});
+		}
+	});
+	return filenames;
+}
+
 export function formatWidgetName(widget: string) {
 	return widget
 		.split('-')
@@ -43,13 +59,14 @@ export default factory(function App({ properties, middleware: { block } }) {
 	const { includeDocs, configs } = properties();
 	const widgets = Object.keys(configs).sort();
 	const widgetFilenames = getWidgetFileNames(configs);
+	const exampleFilenames = getExampleFileNames(configs);
 	let widgetReadmeContent: Content = {};
 	let widgetExampleContent: Content = {};
 	let widgetProperties: { [index: string]: PropertyInterface[] } = {};
 	let widgetThemeClasses: { [index: string]: { [index: string]: string } } = {};
 	if (includeDocs) {
-		widgetReadmeContent = block(readme)() || {};
-		widgetExampleContent = block(code)() || {};
+		widgetReadmeContent = block(readme)(Object.keys(widgetFilenames)) || {};
+		widgetExampleContent = block(code)(exampleFilenames) || {};
 		widgetProperties = block(getWidgetProperties)(widgetFilenames) || {};
 		widgetThemeClasses = block(getTheme)(widgetFilenames) || {};
 	}
@@ -74,10 +91,8 @@ export default factory(function App({ properties, middleware: { block } }) {
 						if (!example) {
 							return null;
 						}
-						const widgetPath = `${widgetName}/${example.filename}`;
-						const content =
-							widgetExampleContent[`${widgetPath}.tsx`] ||
-							widgetExampleContent[`${widgetPath}.ts`];
+						const widgetPath = `${example.filename}`;
+						const content = widgetExampleContent[widgetPath];
 						const propertyInterface = widgetProperties[widgetName];
 						const themeClasses = widgetThemeClasses[widgetName];
 						return (

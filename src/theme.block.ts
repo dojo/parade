@@ -9,7 +9,7 @@ interface ThemeInterface {
 
 export default function(config: { [index: string]: string }): ThemeInterface {
 	const project = new Project({
-		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
+		tsConfigFilePath: path.join(process.cwd(), 'tsconfig.json')
 	});
 	return Object.keys(config).reduce((properties, widgetName) => {
 		const classHash = {} as any;

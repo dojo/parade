@@ -2,7 +2,7 @@
   "name": "@dojo/parade",
   "version": "0.0.3-pre",
   "scripts": {
-    "dev": "dojo build app -m dev -w -s",
+    "dev": "dojo build app -m dev -w -s -f docs=true",
     "start": "npm run dev",
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
@@ -11,11 +11,13 @@
     "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
     "release": "dojo-release"
   },
-  "dependencies": {
-    "@dojo/cli-build-widget": "next",
+  "peerDependencies": {
     "@dojo/framework": "next",
     "@dojo/themes": "^6.0.0",
-    "@dojo/widgets": "next",
+    "@dojo/widgets": "next"
+  },
+  "dependencies": {
+    "@dojo/cli-build-widget": "next",
     "canonical-path": "1.0.0",
     "cldr-data": "36.0.0",
     "intern": "4.6.0",
@@ -31,7 +33,10 @@
   "devDependencies": {
     "@dojo/cli": "^6.0.0",
     "@dojo/cli-build-app": "next",
+    "@dojo/framework": "next",
     "@dojo/scripts": "^4.0.2",
+    "@dojo/themes": "^6.0.0",
+    "@dojo/widgets": "next",
     "@types/node": "~9.6.5",
     "shx": "^0.3.2",
     "typescript": "~3.4.5"
