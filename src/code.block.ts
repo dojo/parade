@@ -7,8 +7,8 @@ export default function(exampleFilenames: any) {
 	loadLanguages(['tsx']);
 	const examples: any = {};
 	exampleFilenames.forEach((exampleFilename: string) => {
-		const ts = path.join(process.cwd(), 'src', 'example', `${exampleFilename}.ts`);
-		const tsx = path.join(process.cwd(), 'src', 'example', `${exampleFilename}.tsx`);
+		const ts = path.join(process.cwd(), `${exampleFilename}.ts`);
+		const tsx = path.join(process.cwd(), `${exampleFilename}.tsx`);
 		let code = '';
 		if (fs.existsSync(tsx)) {
 			code = fs.readFileSync(tsx, 'utf-8');
