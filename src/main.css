@@ -1,4 +1,28 @@
-@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css');
+
+.top-16 {
+	top: 4rem !important;
+}
+
+@media (min-width: 992px) {
+	.lg\:top-16 {
+		top: 4rem !important;
+	}
+}
+
+@media (min-width: 992px) {
+	.sticky\?lg\:h-\(screen-16\) {
+		height: calc(100vh - 4rem) !important;
+	}
+}
+
+.max-w-screen-xl {
+	max-width: 1280px !important;
+}
+
+h1 {
+	font-size: 1.875rem !important;
+}
 
 *,
 *::before,
@@ -7,9 +31,10 @@
 }
 
 html {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-	font-size: 15px;
-	font-weight: normal;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
+		Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+	font-weight: 300;
+	font-size: 16px;
 	line-height: 1.65;
 	-webkit-text-size-adjust: 100%;
 	background: #ffffff;
@@ -26,7 +51,6 @@ pre,
 code {
 	font-size: 14px;
 	color: #000;
-	background: none;
 	text-shadow: 0 1px #fff;
 	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 	text-align: left;
@@ -44,93 +68,6 @@ code {
 	hyphens: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: 'Montserrat', sans-serif;
-	color: #333;
-	font-weight: normal;
-	line-height: 1.25;
-	margin-bottom: 20px;
-}
-
-h1 {
-	font-size: 25px;
-	line-height: 1.2;
-}
-
-h2 {
-	font-size: 21px;
-	line-height: 1.3;
-}
-
-h3 {
-	font-size: 19px;
-	line-height: 1.4;
-}
-
-h4 {
-	font-size: 19px;
-	line-height: 1.4;
-}
-
-h5 {
-	font-size: 17px;
-	line-height: 1.4;
-}
-
-h6 {
-	font-size: 15px;
-	line-height: 1.4;
-}
-
-/* Add margin if adjacent element */
-* + h1,
-* + h2,
-* + h3,
-* + h4,
-* + h5,
-* + h6 {
-	margin-top: 40px;
-}
-
-@media (max-width: 768px) {
-	* + h1,
-	* + h2,
-	* + h3,
-	* + h4,
-	* + h5,
-	* + h6 {
-		margin-top: 25px;
-	}
-	h1 {
-		font-size: 24px;
-	}
-
-	h2 {
-		font-size: 22px;
-	}
-
-	h3 {
-		font-size: 20px;
-	}
-
-	h4 {
-		font-size: 18px;
-	}
-
-	h5 {
-		font-size: 16px;
-	}
-
-	h6 {
-		font-size: 14px;
-	}
-}
-
 em {
 	font-style: normal;
 }
@@ -138,36 +75,6 @@ em {
 a {
 	text-decoration: none;
 	color: inherit;
-}
-
-.docs {
-	overflow: auto;
-}
-
-.docs table {
-	background: #282a36;
-	border-collapse: collapse;
-	border: 1px solid #282a36;
-}
-
-.docs th {
-	text-align: left;
-	font-weight: bold;
-	color: white;
-	padding: 10px 15px;
-}
-
-.docs thead {
-	font-size: 14px;
-}
-
-.docs tbody {
-	background: white;
-}
-
-.docs td {
-	text-align: left;
-	padding: 10px 15px;
 }
 
 /**
@@ -181,7 +88,6 @@ code[class*='language-'],
 pre[class*='language-'] {
 	font-size: 14px;
 	color: #f8f8f2;
-	background: none;
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-size: 13px;
@@ -198,19 +104,6 @@ pre[class*='language-'] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
-}
-
-/* Code blocks */
-pre[class*='language-'] {
-	padding: 1em;
-	margin: 0.5em 0;
-	overflow: auto;
-	border-radius: 0.3em;
-}
-
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
-	background: #282a36;
 }
 
 /* Inline code */

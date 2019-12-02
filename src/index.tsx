@@ -1,11 +1,10 @@
 import global from '@dojo/framework/shim/global';
-import has from '@dojo/framework/core/has';
 import renderer, { tsx } from '@dojo/framework/core/vdom';
 import Registry from '@dojo/framework/core/Registry';
 import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 
-import './main.css'
+import './main.css';
 
 import routes from './routes';
 import App from './App';
@@ -21,18 +20,14 @@ export default ({ config }: { config: any }) => {
 				tests(id);
 			}
 		});
-	}
-	else {
-		const includeDocs = Boolean(
-			has('docs') === 'false' ? false : has('docs') === 'true' ? true : has('docs')
-		);
+	} else {
 		const registry = new Registry();
 		themes.map((theme: any) => {
 			registerThemeInjector(theme, registry);
 		});
 		registerRouterInjector(routes, registry);
 
-		const r = renderer(() => <App includeDocs={includeDocs} config={config} />);
+		const r = renderer(() => <App config={config} />);
 		r.mount({ registry, domNode: document.getElementById('app')! });
 	}
-}
+};

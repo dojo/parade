@@ -9,5 +9,5 @@ const factory = create().properties<ButtonProperties>();
 
 export default factory(function Button({ properties }) {
 	const { label } = properties();
-	return <button classes={ [ css.root ] }>{ label }</button>;
+	return <button classes={[css.root]}>{label}</button>;
 });
