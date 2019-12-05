@@ -6,7 +6,7 @@
     "start": "npm run dev",
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
-    "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",
+    "copy": "shx mkdir -p ./dist/release && shx cp -r ./output/dist/* ./dist/release/",
     "clean": "rm -rf ./output/dist && rm -rf output",
     "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
     "release": "dojo-release"
