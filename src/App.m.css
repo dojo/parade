@@ -37,3 +37,9 @@
 		width: auto;
 	}
 }
+
+@media (min-width: 992px) {
+	.main {
+			margin-top: 0;
+	}
+}

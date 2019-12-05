@@ -77,3 +77,35 @@
 		position: inherit;
 	}
 }
+
+@media (min-width: 992px) {
+	.root {
+		width: 250px;
+		z-index: 1;
+		height: 100%;
+		position: relative;
+	}
+	.menu {
+		width: 100%;
+		display: block;
+    padding-top: 5px;
+    min-height: 100vh;
+	}
+	.item {
+		display: block;
+		padding: 5px 10px;
+		margin: 0 10px;
+	}
+	.link {
+		opacity: 0.5;
+	}
+	.selected,
+	.link:hover {
+		opacity: 1;
+	}
+	.link:after,
+	.link:hover::before,
+	.selected::before {
+		background-color: transparent;
+	}
+}
