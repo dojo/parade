@@ -1,74 +1,68 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import injector from '@dojo/framework/core/middleware/injector';
-import Router from '@dojo/framework/routing/Router';
-import has from '@dojo/framework/core/has';
-import TabController from '@dojo/widgets/tab-controller';
-import Tab from '@dojo/widgets/tab';
 
-import * as css from './Example.m.css';
+import HorizontalRule from './HorizontalRule';
+import ThemeTable from './ThemeTable';
+import PropertyTable from './PropertyTable';
 
-interface ExampleProperties {
-	content?: string;
+const factory = create().properties<{
 	widgetName: string;
-	active: string;
-}
+	exampleName?: string;
+	widgetReadmes: any;
+	widgetExamples: any;
+	widgetProperties: any;
+	widgetThemes: any;
+	config: any;
+}>();
 
-const factory = create({ injector }).properties<ExampleProperties>();
+export default factory(function Example({ properties }) {
+	const {
+		config,
+		widgetName,
+		exampleName,
+		widgetReadmes,
+		widgetExamples,
+		widgetProperties,
+		widgetThemes
+	} = properties();
 
-export default factory(function Example({ children, properties, middleware: { injector } }) {
-	const router = injector.get<Router>('router');
-	const { content, widgetName, active } = properties();
-	const tabNames = ['example'];
+	const isExample = !exampleName;
+	const example = isExample
+		? config.widgets[widgetName].overview.example
+		: config.widgets[widgetName].examples.find(
+				(e: any) => e.filename.toLowerCase() === exampleName
+		  );
+	const codesandboxPath = config.codesandboxPath(widgetName, example.filename);
+	const examplePath = config.examplePath(widgetName, example.filename);
+	const readmePath = config.readmePath(widgetName);
 
-	if (content) {
-		tabNames.push('code');
-	}
-	if (!has('docs')) {
-		tabNames.push('tests');
-	}
-	const activeTab = tabNames.indexOf(active) === -1 ? 0 : tabNames.indexOf(active);
-	const tabs = [
-		<Tab key="example" label="Example">
-			<div classes={css.tab}>{children()}</div>
-		</Tab>
-	];
-	if (content) {
-		tabs.push(
-			<Tab key="code" label="Code">
-				<div classes={css.tab}>
-					<pre classes={['language-ts']}>
-						<code classes={['language-ts']} innerHTML={content} />
-					</pre>
-				</div>
-			</Tab>
-		);
-	}
-	if (!has('docs')) {
-		tabs.push(
-			<Tab key="tests" label="Tests">
-				<div classes={css.tab}>
-					{activeTab === tabNames.indexOf('tests') && (
-						<iframe
-							classes={css.iframe}
-							src={`./intern?config=intern/intern.json&widget=${widgetName}`}
-						/>
-					)}
-				</div>
-			</Tab>
-		);
-	}
+	const widgetReadme = widgetReadmes[readmePath];
+	const widgetExample = widgetExamples[examplePath];
+	const widgetProperty = widgetProperties[widgetName];
+	const widgetTheme = widgetThemes[widgetName];
+
 	return (
-		<TabController
-			activeIndex={activeTab}
-			onRequestTabChange={(index) => {
-				if (router) {
-					const activeTab = tabNames[index];
-					const href = router.link('example', { active: activeTab });
-					href && router.setPath(href);
-				}
-			}}
-		>
-			{tabs}
-		</TabController>
+		<div>
+			{isExample && <div innerHTML={widgetReadme} />}
+			{isExample && <HorizontalRule />}
+			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
+			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
+				<example.module />
+			</div>
+			<div classes="rounded-b-lg bg-gray-800">
+				<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
+					<code classes="language-ts" innerHTML={widgetExample} />
+				</pre>
+			</div>
+			<div classes="my-4">
+				<a href={codesandboxPath}>
+					<img
+						alt={`Edit ${examplePath} example`}
+						src="https://codesandbox.io/static/img/play-codesandbox.svg"
+					/>
+				</a>
+			</div>
+			{isExample && <PropertyTable props={widgetProperty} />}
+			{isExample && <ThemeTable themes={widgetTheme} />}
+		</div>
 	);
 });

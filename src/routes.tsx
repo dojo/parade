@@ -6,10 +6,18 @@ export default [
 	},
 	{
 		path: 'widget/{widget}',
-		outlet: 'basic',
+		outlet: 'widget',
 		children: [
 			{
-				path: '{example}?{active}',
+				path: 'tests',
+				outlet: 'tests'
+			},
+			{
+				path: 'overview',
+				outlet: 'overview'
+			},
+			{
+				path: 'example/{example}',
 				outlet: 'example'
 			}
 		]

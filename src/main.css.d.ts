@@ -1,4 +1,3 @@
-export const docs: string;
 export const token: string;
 export const comment: string;
 export const prolog: string;

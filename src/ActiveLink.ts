@@ -16,9 +16,12 @@ function paramsEqual(linkParams: any = {}, contextParams: any = {}) {
 	return Object.keys(linkParams).every((key) => linkParams[key] === contextParams[key]);
 }
 
-const factory = create({ injector, diffProperty, cache, invalidator }).properties<
-	ActiveLinkProperties
->();
+const factory = create({
+	injector,
+	diffProperty,
+	cache,
+	invalidator
+}).properties<ActiveLinkProperties>();
 
 export const ActiveLink = factory(function ActiveLink({
 	middleware: { diffProperty, injector, cache, invalidator },

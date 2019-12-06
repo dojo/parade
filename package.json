@@ -2,43 +2,54 @@
   "name": "@dojo/parade",
   "version": "0.0.4-pre",
   "scripts": {
-    "dev": "dojo build app -m dev -w -s -f docs=true",
+    "dev": "dojo build app -m dev -w -s",
     "start": "npm run dev",
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
-    "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",
-    "clean": "rm -rf ./output/dist && rm -rf output",
+    "copy": "shx mkdir -p ./dist/release && shx cp -r ./output/dist/* ./dist/release/",
+    "clean": "shx rm -rf ./output/dist && shx rm -rf output",
     "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
-    "release": "dojo-release"
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "release": "npm run package && dojo-release"
   },
   "peerDependencies": {
-    "@dojo/framework": "next",
-    "@dojo/themes": "^6.0.0",
-    "@dojo/widgets": "next"
+    "@dojo/framework": "7.0.0-alpha.4",
+    "@dojo/themes": "^6.0.0"
   },
   "dependencies": {
     "canonical-path": "1.0.0",
     "cldr-data": "36.0.0",
-    "intern": "4.6.0",
     "postcss": "7.0.21",
     "prismjs": "1.17.1",
+    "rehype-add-classes": "^1.0.0",
     "rehype-stringify": "6.0.0",
     "remark-parse": "7.0.1",
     "remark-rehype": "5.0.0",
+    "remark-sectionize": "^1.1.0",
     "ts-morph": "4.2.0",
     "tslib": "~1.9.1",
     "unified": "8.4.1"
   },
   "devDependencies": {
-    "@dojo/cli": "^7.0.0-alpha.1",
-    "@dojo/cli-build-app": "next",
-    "@dojo/cli-build-widget": "next",
+    "@dojo/cli": "7.0.0-alpha.1",
+    "@dojo/cli-build-app": "7.0.0-alpha.6",
+    "@dojo/cli-build-widget": "7.0.0-alpha.5",
     "@dojo/framework": "next",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "next",
     "@types/node": "~9.6.5",
+    "intern": "^4.6.0",
+    "prettier": "^1.19.1",
     "shx": "^0.3.2",
+    "tailwindcss": "^1.1.4",
     "typescript": "~3.4.5"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4,
+    "useTabs": true,
+    "printWidth": 100,
+    "arrowParens": "always"
   }
 }
