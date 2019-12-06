@@ -6,8 +6,8 @@
     "start": "npm run dev",
     "dist": "dojo build widget -t lib",
     "dist:legacy": "dojo build widget -t lib --legacy",
-    "copy": "mkdir -p ./dist/release && cp -r ./output/dist/* ./dist/release/",
-    "clean": "rm -rf ./output/dist && rm -rf output",
+    "copy": "shx mkdir -p ./dist/release && shx cp -r ./output/dist/* ./dist/release/",
+    "clean": "shx rm -rf ./output/dist && shx rm -rf output",
     "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "release": "npm run package && dojo-release"
@@ -42,6 +42,7 @@
     "intern": "^4.6.0",
     "prettier": "^1.19.1",
     "shx": "^0.3.2",
+    "tailwindcss": "^1.1.4",
     "typescript": "~3.4.5"
   },
   "prettier": {
