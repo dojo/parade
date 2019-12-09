@@ -22,9 +22,8 @@ export default ({ config }: { config: any }) => {
 		});
 	} else {
 		const registry = new Registry();
-		themes.map((theme: any) => {
-			registerThemeInjector(theme, registry);
-		});
+		const [theme] = themes;
+		registerThemeInjector(theme.theme, registry);
 		registerRouterInjector(routes, registry);
 
 		const r = renderer(() => <App config={config} />);
