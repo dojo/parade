@@ -6,7 +6,10 @@ import blue from './theme/blue';
 
 export default {
 	name: '@dojo/widgets',
-	themes: [{ label: 'Red', theme: red }, { label: 'Blue', theme: blue }],
+	themes: [
+		{ label: 'Red', theme: red },
+		{ label: 'Blue', theme: blue }
+	],
 	tests: (require as any).context('./', true, /\.spec\.ts(x)?$/),
 	home: 'src/example/home.md',
 	readmePath: (widget: string) => `src/example/${widget}/README.md`,
