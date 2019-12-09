@@ -1,4 +1,4 @@
 import parade from './index';
-import config from './config';
+import config from './example/config';
 
 parade({ config });
