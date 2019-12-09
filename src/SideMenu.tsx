@@ -35,7 +35,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 							Overview
 						</ActiveLink>
 					</li>
-					<li classes="mb-2">
+					{ config.tests && <li classes="mb-2">
 						<ActiveLink
 							classes="block transition-fast hover:translate-r-2px hover:text-gray-900 text-gray-600 font-medium"
 							to="tests"
@@ -43,7 +43,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						>
 							Tests
 						</ActiveLink>
-					</li>
+					</li> }
 				</ul>
 				<hr classes="my-1 border-b-2 border-gray-200" />
 				<ul classes="mt-4 overflow-x-hidden">
