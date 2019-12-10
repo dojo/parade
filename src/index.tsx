@@ -11,7 +11,7 @@ import App from './App';
 
 export default ({ config }: { config: any }) => {
 	const { themes, tests } = config;
-	if (global.intern) {
+	if (global.intern && tests && tests.keys) {
 		const url = new URL(window.location.href);
 		const params = url.searchParams;
 		const widget = params.get('widget');
