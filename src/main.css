@@ -72,6 +72,10 @@ code {
 	hyphens: none;
 }
 
+pre {
+	overflow: auto;
+}
+
 em {
 	font-style: normal;
 }
