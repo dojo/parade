@@ -1,4 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
 import block from '@dojo/framework/core/middleware/block';
 import Outlet from '@dojo/framework/routing/Outlet';
 
@@ -50,9 +51,9 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const factory = create({ block }).properties<{ config: any }>();
+const factory = create({ block, icache }).properties<{ config: any }>();
 
-export default factory(function App({ properties, middleware: { block } }) {
+export default factory(function App({ properties, middleware: { block, icache } }) {
 	const { config } = properties();
 	const widgetFilenames = getWidgetFileNames(config);
 	const exampleFilenames = getExampleFileNames(config);
@@ -65,13 +66,16 @@ export default factory(function App({ properties, middleware: { block } }) {
 
 	return (
 		<div>
-			<Header config={config} />
+			<Header config={config} open={!!icache.get('open')} onMenuToggle={ (open) => {
+				icache.set('open', open);
+			} } />
 			<div classes="w-full max-w-screen-xl mx-auto px-6">
 				<div classes="lg:flex -mx-6">
-					<MainMenu config={config} />
+					<MainMenu config={config} showMenu={!!icache.get('open')} onMenuItemClick={() => {
+						icache.set('open', false);
+					}} />
 					<div
-						id="content-wrapper"
-						classes="min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5"
+						classes={`${icache.get('open') ? 'overflow-hidden max-h-screen fixed hidden' : '' } min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5`}
 					>
 						<div id="content">
 							<div id="app" classes="flex">
