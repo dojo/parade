@@ -66,16 +66,26 @@ export default factory(function App({ properties, middleware: { block, icache } 
 
 	return (
 		<div>
-			<Header config={config} open={!!icache.get('open')} onMenuToggle={ (open) => {
-				icache.set('open', open);
-			} } />
+			<Header
+				config={config}
+				open={!!icache.get('open')}
+				onMenuToggle={(open) => {
+					icache.set('open', open);
+				}}
+			/>
 			<div classes="w-full max-w-screen-xl mx-auto px-6">
 				<div classes="lg:flex -mx-6">
-					<MainMenu config={config} showMenu={!!icache.get('open')} onMenuItemClick={() => {
-						icache.set('open', false);
-					}} />
+					<MainMenu
+						config={config}
+						showMenu={!!icache.get('open')}
+						onMenuItemClick={() => {
+							icache.set('open', false);
+						}}
+					/>
 					<div
-						classes={`${icache.get('open') ? 'overflow-hidden max-h-screen fixed hidden' : '' } min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5`}
+						classes={`${
+							icache.get('open') ? 'overflow-hidden max-h-screen fixed hidden' : ''
+						} min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5`}
 					>
 						<div id="content">
 							<div id="app" classes="flex">
