@@ -1,5 +1,5 @@
 import * as path from 'canonical-path';
-import { Project, InterfaceDeclaration, MethodSignature, PropertySignature } from 'ts-morph';
+import { Project, MethodSignature, PropertySignature, Type } from 'ts-morph';
 
 function getPropertyInterfaceName(value: string) {
 	const result = value.replace(/-([a-z])/g, function(g) {
@@ -24,18 +24,13 @@ function format(prop: MethodSignature | PropertySignature): PropertyInterface {
 	};
 }
 
-function getWidgetProperties(propsInterface: InterfaceDeclaration): PropertyInterface[] {
-	let properties: any[] = [];
-	const baseInterfaces = propsInterface.getBaseDeclarations() as InterfaceDeclaration[];
+function isSignature(node: any): node is MethodSignature | PropertySignature {
+	return Boolean(node && node.getName && node.getType && node.hasQuestionToken && node.getJsDocs)
+}
 
-	for (let i = 0; i < baseInterfaces.length; i++) {
-		properties = [...properties, ...getWidgetProperties(baseInterfaces[i])];
-	}
-	const propNodes = [...propsInterface.getProperties(), ...propsInterface.getMethods()];
-	for (let i = 0; i < propNodes.length; i++) {
-		properties.push(format(propNodes[i]));
-	}
-	return properties;
+
+function getWidgetProperties(propsType: Type): PropertyInterface[] {
+	return propsType.getProperties().map(symbol => symbol.getDeclarations()[0]).filter(isSignature).map(format);
 }
 
 export default function(config: { [index: string]: string }) {
@@ -58,7 +53,7 @@ export default function(config: { [index: string]: string }) {
 			);
 			return props;
 		}
-		let properties = getWidgetProperties(propsInterface);
+		let properties = getWidgetProperties(propsInterface.getType());
 		properties.sort((a, b) => {
 			if (a.optional && !b.optional) {
 				return 1;
