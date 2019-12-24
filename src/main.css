@@ -16,6 +16,10 @@
 	}
 }
 
+.z-100 {
+	z-index: 1000 !important;
+}
+
 .max-w-screen-xl {
 	max-width: 1280px !important;
 }

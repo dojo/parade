@@ -1,4 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
 import block from '@dojo/framework/core/middleware/block';
 import Outlet from '@dojo/framework/routing/Outlet';
 
@@ -50,9 +51,65 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const factory = create({ block }).properties<{ config: any }>();
+const factory = create({ block, icache }).properties<{ config: any }>();
 
-export default factory(function App({ properties, middleware: { block } }) {
+const Main = create({ icache }).properties<{ config: any; widgetName?: string }>()(
+	({ properties, children, middleware: { icache } }) => {
+		const { config, widgetName } = properties();
+		return (
+			<div>
+				<Header
+					config={config}
+					open={!!icache.get('open')}
+					onMenuToggle={(open) => {
+						icache.set('open', open);
+					}}
+				/>
+				<div classes="w-full max-w-screen-xl mx-auto px-6">
+					<div classes="lg:flex -mx-6">
+						<MainMenu
+							widgetName={widgetName}
+							config={config}
+							showMenu={!!icache.get('open')}
+							onMenuItemClick={() => {
+								icache.set('open', false);
+							}}
+						/>
+						<div
+							classes={`${
+								icache.get('open')
+									? 'overflow-hidden max-h-screen fixed hidden'
+									: ''
+							} min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5`}
+						>
+							<div id="content">
+								<div id="app" classes="flex">
+									<div classes="pt-24 pb-16 lg:pt-28 w-full">
+										<div classes="flex">
+											<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
+												{children()}
+											</div>
+											<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
+												{widgetName && (
+													<SideMenu
+														config={config}
+														widgetName={widgetName}
+													/>
+												)}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+);
+
+export default factory(function App({ properties, middleware: { block, icache } }) {
 	const { config } = properties();
 	const widgetFilenames = getWidgetFileNames(config);
 	const exampleFilenames = getExampleFileNames(config);
@@ -65,117 +122,68 @@ export default factory(function App({ properties, middleware: { block } }) {
 
 	return (
 		<div>
-			<Header config={config} />
-			<div classes="w-full max-w-screen-xl mx-auto px-6">
-				<div classes="lg:flex -mx-6">
-					<MainMenu config={config} />
-					<div
-						id="content-wrapper"
-						classes="min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5"
-					>
-						<div id="content">
-							<div id="app" classes="flex">
-								<div classes="pt-24 pb-16 lg:pt-28 w-full">
-									<Outlet
-										key="landing"
-										id="landing"
-										renderer={() => {
-											return (
-												<div classes="flex">
-													<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-														<Landing
-															config={config}
-															widgetReadmes={widgetReadmeContent}
-														/>
-													</div>
-												</div>
-											);
-										}}
-									/>
-									<Outlet
-										key="tests"
-										id="tests"
-										renderer={({ params, queryParams }) => {
-											const { widget: widgetName } = params;
-											return (
-												<div classes="flex">
-													<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-														<Test widgetName={widgetName} />
-													</div>
-													<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
-														<SideMenu
-															config={config}
-															widgetName={widgetName}
-														/>
-													</div>
-												</div>
-											);
-										}}
-									/>
-									<Outlet
-										key="overview"
-										id="overview"
-										renderer={({ params, queryParams }) => {
-											const { widget: widgetName } = params;
-											return (
-												<div classes="flex">
-													<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-														<Example
-															widgetName={widgetName}
-															config={config}
-															widgetReadmes={widgetReadmeContent}
-															widgetProperties={widgetProperties}
-															widgetThemes={widgetThemeClasses}
-															widgetExamples={widgetExampleContent}
-														/>
-													</div>
-													<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
-														<SideMenu
-															config={config}
-															widgetName={widgetName}
-														/>
-													</div>
-												</div>
-											);
-										}}
-									/>
-									<Outlet
-										key="example"
-										id="example"
-										renderer={({ params, queryParams }) => {
-											const {
-												widget: widgetName,
-												example: exampleName
-											} = params;
-											return (
-												<div classes="flex">
-													<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-														<Example
-															widgetName={widgetName}
-															exampleName={exampleName}
-															config={config}
-															widgetReadmes={widgetReadmeContent}
-															widgetProperties={widgetProperties}
-															widgetThemes={widgetThemeClasses}
-															widgetExamples={widgetExampleContent}
-														/>
-													</div>
-													<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
-														<SideMenu
-															config={config}
-															widgetName={widgetName}
-														/>
-													</div>
-												</div>
-											);
-										}}
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<Outlet
+				key="landing"
+				id="landing"
+				renderer={() => {
+					return (
+						<Main config={config}>
+							<Landing config={config} widgetReadmes={widgetReadmeContent} />
+						</Main>
+					);
+				}}
+			/>
+			<Outlet
+				key="tests"
+				id="tests"
+				renderer={({ params, queryParams }) => {
+					const { widget: widgetName } = params;
+					return (
+						<Main config={config} widgetName={widgetName}>
+							<Test widgetName={widgetName} />
+						</Main>
+					);
+				}}
+			/>
+			<Outlet
+				key="overview"
+				id="overview"
+				renderer={({ params, queryParams }) => {
+					const { widget: widgetName } = params;
+					return (
+						<Main config={config} widgetName={widgetName}>
+							<Example
+								widgetName={widgetName}
+								config={config}
+								widgetReadmes={widgetReadmeContent}
+								widgetProperties={widgetProperties}
+								widgetThemes={widgetThemeClasses}
+								widgetExamples={widgetExampleContent}
+							/>
+						</Main>
+					);
+				}}
+			/>
+			<Outlet
+				key="example"
+				id="example"
+				renderer={({ params, queryParams }) => {
+					const { widget: widgetName, example: exampleName } = params;
+					return (
+						<Main config={config} widgetName={widgetName}>
+							<Example
+								widgetName={widgetName}
+								exampleName={exampleName}
+								config={config}
+								widgetReadmes={widgetReadmeContent}
+								widgetProperties={widgetProperties}
+								widgetThemes={widgetThemeClasses}
+								widgetExamples={widgetExampleContent}
+							/>
+						</Main>
+					);
+				}}
+			/>
 		</div>
 	);
 });
