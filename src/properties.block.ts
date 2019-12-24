@@ -25,12 +25,15 @@ function format(prop: MethodSignature | PropertySignature): PropertyInterface {
 }
 
 function isSignature(node: any): node is MethodSignature | PropertySignature {
-	return Boolean(node && node.getName && node.getType && node.hasQuestionToken && node.getJsDocs)
+	return Boolean(node && node.getName && node.getType && node.hasQuestionToken && node.getJsDocs);
 }
 
-
 function getWidgetProperties(propsType: Type): PropertyInterface[] {
-	return propsType.getProperties().map(symbol => symbol.getDeclarations()[0]).filter(isSignature).map(format);
+	return propsType
+		.getProperties()
+		.map((symbol) => symbol.getDeclarations()[0])
+		.filter(isSignature)
+		.map(format);
 }
 
 export default function(config: { [index: string]: string }) {

@@ -1,9 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ActiveLink from './ActiveLink';
+import SideMenu from './SideMenu';
 
 const factory = create().properties<{
 	config: any;
 	showMenu: boolean;
+	widgetName?: string;
 	onMenuItemClick: () => void;
 }>();
 
@@ -15,7 +17,7 @@ function formatWidgetName(widget: string) {
 }
 
 export default factory(function MainMenu({ properties }) {
-	const { config, showMenu, onMenuItemClick } = properties();
+	const { config, showMenu, onMenuItemClick, widgetName } = properties();
 
 	const widgets = Object.keys(config.widgets).sort();
 	return (
@@ -50,6 +52,10 @@ export default factory(function MainMenu({ properties }) {
 								</ActiveLink>
 							);
 						})}
+						<div classes="xl:hidden block w-2/3">
+							<hr classes="mt-10 my-1 border-b-2 border-gray-200" />
+							{widgetName && <SideMenu config={config} widgetName={widgetName} />}
+						</div>
 					</div>
 				</nav>
 			</div>
