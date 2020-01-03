@@ -49,14 +49,39 @@ export default function(config: { [index: string]: string }) {
 		if (!sourceFile) {
 			return props;
 		}
-		const propsInterface = sourceFile.getInterface(getPropertyInterfaceName(widgetName));
+
+		const propsInterfaceTypeName = getPropertyInterfaceName(widgetName);
+		const propsInterface =
+			sourceFile.getInterface(propsInterfaceTypeName) ||
+			sourceFile.getTypeAlias(propsInterfaceTypeName);
+
 		if (!propsInterface) {
 			console.warn(
-				`could not find interface for ${widgetName} ${getPropertyInterfaceName(widgetName)}`
+				`could not find interface or type for ${widgetName} ${propsInterfaceTypeName}`
 			);
 			return props;
 		}
 		let properties = getWidgetProperties(propsInterface.getType());
+		const unionTypes = propsInterface.getType().getUnionTypes();
+		if (unionTypes && unionTypes.length) {
+			unionTypes.forEach((unionType) => {
+				const unionProperties = getWidgetProperties(unionType);
+				unionProperties.forEach((unionProperty) => {
+					const property = properties.find((prop) => prop.name === unionProperty.name);
+					if (property) {
+						const types = unionProperty.type.split('|');
+						types.forEach((type) => {
+							if (property.type.indexOf(type) === -1) {
+								property.type = `${type} | ${property.type}`;
+							}
+						});
+					} else {
+						properties.push(unionProperty);
+					}
+				});
+			});
+		}
+
 		properties.sort((a, b) => {
 			if (a.optional && !b.optional) {
 				return 1;

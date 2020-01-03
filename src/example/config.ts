@@ -1,5 +1,6 @@
 import ButtonExample from './ButtonExample';
 import ButtonAdvanced from './ButtonAdvanced';
+import InputExample from './InputExample';
 
 import red from './theme/red';
 import blue from './theme/blue';
@@ -34,6 +35,15 @@ export default {
 					title: 'Button Advanced'
 				}
 			]
+		},
+		input: {
+			filename: 'Input',
+			overview: {
+				example: {
+					filename: 'InputExample',
+					module: InputExample
+				}
+			}
 		}
 	}
 };
