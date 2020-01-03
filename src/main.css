@@ -72,7 +72,7 @@ code {
 	hyphens: none;
 }
 
-pre {
+pre[class*='language-'] {
 	overflow: auto;
 }
 
