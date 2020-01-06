@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from './button/Button';
+import Button from './input/Input';
 
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button label="Hello" baz="baz" otherBaseMethod={() => 'other'} />;
+	return <Button label="Hello" value={''} onValue={() => {}} type="labeled" />;
 });
