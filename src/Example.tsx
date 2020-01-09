@@ -31,7 +31,8 @@ export default factory(function Example({ properties }) {
 		: config.widgets[widgetName].examples.find(
 				(e: any) => e.filename.toLowerCase() === exampleName
 		  );
-	const codesandboxPath = config.codesandboxPath(widgetName, example.filename);
+	const codesandboxPath =
+		config.codesandboxPath && config.codesandboxPath(widgetName, example.filename);
 	const examplePath = config.examplePath(widgetName, example.filename);
 	const readmePath = config.readmePath(widgetName);
 
@@ -53,14 +54,16 @@ export default factory(function Example({ properties }) {
 					<code classes="language-ts" innerHTML={widgetExample} />
 				</pre>
 			</div>
-			<div classes="my-4">
-				<a href={codesandboxPath}>
-					<img
-						alt={`Edit ${examplePath} example`}
-						src="https://codesandbox.io/static/img/play-codesandbox.svg"
-					/>
-				</a>
-			</div>
+			{codesandboxPath && (
+				<div classes="my-4">
+					<a href={codesandboxPath}>
+						<img
+							alt={`Edit ${examplePath} example`}
+							src="https://codesandbox.io/static/img/play-codesandbox.svg"
+						/>
+					</a>
+				</div>
+			)}
 			{isExample && <PropertyTable props={widgetProperty} />}
 			{isExample && <ThemeTable themes={widgetTheme} />}
 		</div>
