@@ -13,7 +13,7 @@
     "release": "npm run package && dojo-release"
   },
   "peerDependencies": {
-    "@dojo/framework": "7.0.0-alpha.4",
+    "@dojo/framework": "7.0.0-alpha.7",
     "@dojo/themes": "^6.0.0"
   },
   "dependencies": {

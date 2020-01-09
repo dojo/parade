@@ -1,7 +1,7 @@
 import { create, diffProperty, invalidator, w } from '@dojo/framework/core/vdom';
 import { Handle } from '@dojo/framework/core/Destroyable';
 import injector from '@dojo/framework/core/middleware/injector';
-import cache from '@dojo/framework/core/middleware/cache';
+import icache from '@dojo/framework/core/middleware/icache';
 import { SupportedClassName } from '@dojo/framework/core/interfaces';
 import Link, { LinkProperties } from '@dojo/framework/routing/Link';
 import Router from '@dojo/framework/routing/Router';
@@ -19,12 +19,12 @@ function paramsEqual(linkParams: any = {}, contextParams: any = {}) {
 const factory = create({
 	injector,
 	diffProperty,
-	cache,
+	icache,
 	invalidator
 }).properties<ActiveLinkProperties>();
 
 export const ActiveLink = factory(function ActiveLink({
-	middleware: { diffProperty, injector, cache, invalidator },
+	middleware: { diffProperty, injector, icache, invalidator },
 	properties,
 	children
 }) {
@@ -34,7 +34,7 @@ export const ActiveLink = factory(function ActiveLink({
 	diffProperty('to', (current: ActiveLinkProperties, next: ActiveLinkProperties) => {
 		if (current.to !== next.to) {
 			const router = injector.get<Router>(routerKey);
-			const currentHandle = cache.get<Handle>('handle');
+			const currentHandle = icache.get<Handle>('handle');
 			if (currentHandle) {
 				currentHandle.destroy();
 			}
@@ -44,7 +44,7 @@ export const ActiveLink = factory(function ActiveLink({
 						invalidator();
 					}
 				});
-				cache.set('handle', handle);
+				icache.set('handle', handle, false);
 			}
 			invalidator();
 		}
@@ -52,13 +52,13 @@ export const ActiveLink = factory(function ActiveLink({
 
 	const router = injector.get<Router>(routerKey);
 	if (router) {
-		if (!cache.get('handle')) {
+		if (!icache.get('handle')) {
 			const handle = router.on('outlet', ({ outlet }) => {
 				if (outlet.id === to) {
 					invalidator();
 				}
 			});
-			cache.set('handle', handle);
+			icache.set('handle', handle, false);
 		}
 		const context = router.getOutlet(to);
 		const isActive = context && paramsEqual(matchParams, context.params);
