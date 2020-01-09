@@ -4,13 +4,46 @@ import Registry from '@dojo/framework/core/Registry';
 import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import transition from '@dojo/framework/core/animations/cssTransitions';
+import { Theme } from '@dojo/framework/core/middleware/theme';
 
 import './main.css';
 
 import routes from './routes';
 import App from './App';
 
-export default ({ config }: { config: any }) => {
+export interface ConfigThemes {
+	label: string;
+	theme: Theme;
+}
+
+export interface WidgetExampleConfig {
+	filename: string;
+	module: any;
+	title?: string;
+	description?: string;
+}
+
+export interface WidgetConfig {
+	filename?: string;
+	overview: {
+		example: WidgetExampleConfig;
+	};
+	examples?: WidgetExampleConfig[]
+}
+
+export interface Config {
+	name: string;
+	themes: ConfigThemes[];
+	tests?: any,
+	home: string;
+	readmePath: (widget: string) => string;
+	widgetPath: (widget: string, filename: string) => string;
+	examplePath: (widget: string, filename: string) => string;
+	codesandboxPath?: (widget: string, filename: string) => string;
+	widgets: { [index: string]: WidgetConfig; }
+}
+
+export default ({ config }: { config: Config }) => {
 	const { themes, tests } = config;
 	if (global.intern && tests && tests.keys) {
 		const url = new URL(window.location.href);
