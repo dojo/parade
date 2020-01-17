@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import block from '@dojo/framework/core/middleware/block';
+import theme from '@dojo/framework/core/middleware/theme';
 import Outlet from '@dojo/framework/routing/Outlet';
 
 import MainMenu from './MainMenu';
@@ -51,11 +52,15 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const factory = create({ block, icache }).properties<{ config: any }>();
+const factory = create({ block, icache, theme }).properties<{ config: any }>();
 
-const Main = create({ icache }).properties<{ config: any; widgetName?: string }>()(
-	({ properties, children, middleware: { icache } }) => {
+const Main = create({ icache, theme }).properties<{ config: any; widgetName?: string }>()(
+	({ properties, children, middleware: { theme, icache } }) => {
 		const { config, widgetName } = properties();
+		const changeTheme = (themeName: string) => {
+			const newTheme = config.themes[themeName].theme;
+			theme.set(newTheme);
+		};
 		return (
 			<div>
 				<Header
@@ -94,6 +99,7 @@ const Main = create({ icache }).properties<{ config: any; widgetName?: string }>
 													<SideMenu
 														config={config}
 														widgetName={widgetName}
+														onThemeChange={changeTheme}
 													/>
 												)}
 											</div>
@@ -109,7 +115,7 @@ const Main = create({ icache }).properties<{ config: any; widgetName?: string }>
 	}
 );
 
-export default factory(function App({ properties, middleware: { block, icache } }) {
+export default factory(function App({ properties, middleware: { block, icache, theme } }) {
 	const { config } = properties();
 	const widgetFilenames = getWidgetFileNames(config);
 	const exampleFilenames = getExampleFileNames(config);
@@ -122,6 +128,27 @@ export default factory(function App({ properties, middleware: { block, icache } 
 
 	return (
 		<div>
+			<Outlet
+				key="standalone-example"
+				id="standalone-example"
+				renderer={({ params, queryParams }) => {
+					let newTheme = config.themes[0].theme;
+					config.themes.forEach((theme: any, i: number) => {
+						if (theme.label === queryParams.theme) {
+							newTheme = config.themes[i].theme;
+						}
+					});
+					if (theme.get() !== newTheme) {
+						theme.set(newTheme);
+					}
+					const { widget: widgetName, example: exampleName } = params;
+					const isOverview = config.widgets[widgetName].overview.example.filename.toLowerCase() === exampleName
+					const example = isOverview ? config.widgets[widgetName].overview.example : config.widgets[widgetName].examples.find(
+							(e: any) => e.filename.toLowerCase() === exampleName
+						);
+					return <example.module />;
+				}}
+			/>
 			<Outlet
 				key="landing"
 				id="landing"

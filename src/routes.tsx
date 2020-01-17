@@ -19,7 +19,12 @@ export default [
 			{
 				path: 'example/{example}',
 				outlet: 'example'
-			}
+			},
+			{
+				path: 'standalone/{example}',
+				outlet: 'standalone-example'
+			},
+
 		]
 	}
 ];

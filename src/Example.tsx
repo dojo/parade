@@ -1,10 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
+import theme from '@dojo/framework/core/middleware/theme';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
 
-const factory = create().properties<{
+const factory = create({ theme }).properties<{
 	widgetName: string;
 	exampleName?: string;
 	widgetReadmes: any;
@@ -14,7 +15,7 @@ const factory = create().properties<{
 	config: any;
 }>();
 
-export default factory(function Example({ properties }) {
+export default factory(function Example({ properties, middleware: { theme } }) {
 	const {
 		config,
 		widgetName,
@@ -25,8 +26,8 @@ export default factory(function Example({ properties }) {
 		widgetThemes
 	} = properties();
 
-	const isExample = !exampleName;
-	const example = isExample
+	const isOverview = !exampleName;
+	const example = isOverview
 		? config.widgets[widgetName].overview.example
 		: config.widgets[widgetName].examples.find(
 				(e: any) => e.filename.toLowerCase() === exampleName
@@ -41,13 +42,26 @@ export default factory(function Example({ properties }) {
 	const widgetProperty = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
+	const currentTheme = theme.get();
+	let themeName = config.themes[0].label;
+	config.themes.forEach((theme: any, i: number) => {
+		if (currentTheme === theme.theme) {
+			themeName = theme.label;
+		}
+	});
+
 	return (
 		<div>
-			{isExample && <div innerHTML={widgetReadme} />}
-			{isExample && <HorizontalRule />}
+			{isOverview && <div innerHTML={widgetReadme} />}
+			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
 			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
-				<example.module />
+				<iframe src={`#widget/${widgetName}/standalone/${example.filename.toLowerCase()}?theme=${themeName}`}
+					classes="w-full"
+					onload={
+						"this.style.height=(this.contentDocument.body.scrollHeight || 500) +'px';" as any
+					}
+				/>
 			</div>
 			<div classes="rounded-b-lg bg-gray-800">
 				<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
@@ -64,8 +78,8 @@ export default factory(function Example({ properties }) {
 					</a>
 				</div>
 			)}
-			{isExample && <PropertyTable props={widgetProperty} />}
-			{isExample && <ThemeTable themes={widgetTheme} />}
+			{isOverview && <PropertyTable props={widgetProperty} />}
+			{isOverview && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);
 });

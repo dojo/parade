@@ -3,10 +3,10 @@ import theme from '@dojo/framework/core/middleware/theme';
 
 import ActiveLink from './ActiveLink';
 
-const factory = create({ theme }).properties<{ widgetName: string; config: any }>();
+const factory = create({ theme }).properties<{ widgetName: string; config: any, onThemeChange: (theme: string) => void }>();
 
 export default factory(function SideBar({ properties, middleware: { theme } }) {
-	const { widgetName, config } = properties();
+	const { widgetName, config, onThemeChange } = properties();
 
 	const currentTheme = theme.get();
 	let currentThemeIndex = 0;
@@ -77,9 +77,8 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						<div classes="inline-block relative w-4/5">
 							<select
 								onchange={(e) => {
-									const newTheme =
-										config.themes[(e.target as HTMLInputElement).value].theme;
-									theme.set(newTheme);
+									const themeName = (e.target as HTMLInputElement).value;
+									onThemeChange(themeName);
 								}}
 								classes="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
 							>
