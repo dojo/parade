@@ -1,11 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
+import icache from '@dojo/framework/core/middleware/icache';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
 
-const factory = create({ theme }).properties<{
+const factory = create({ theme, icache }).properties<{
 	widgetName: string;
 	exampleName?: string;
 	widgetReadmes: any;
@@ -15,7 +16,7 @@ const factory = create({ theme }).properties<{
 	config: any;
 }>();
 
-export default factory(function Example({ properties, middleware: { theme } }) {
+export default factory(function Example({ properties, middleware: { icache, theme } }) {
 	const {
 		config,
 		widgetName,
@@ -50,17 +51,23 @@ export default factory(function Example({ properties, middleware: { theme } }) {
 		}
 	});
 
+	const dimensions = icache.getOrSet('iframe-dimensions', () => {
+		window.addEventListener('message', (e) => {
+			const dimensions = JSON.parse(e.data);
+			icache.set('iframe-dimensions', dimensions);
+		});
+		return { height: '0px' };
+	});
+
 	return (
 		<div>
 			{isOverview && <div innerHTML={widgetReadme} />}
 			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
 			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
-				<iframe src={`#widget/${widgetName}/standalone/${example.filename.toLowerCase()}?theme=${themeName}`}
+				<iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/standalone/${example.filename.toLowerCase()}?theme=${themeName}`}
 					classes="w-full"
-					onload={
-						"this.style.height=(this.contentDocument.body.scrollHeight || 500) +'px';" as any
-					}
+					styles={dimensions}
 				/>
 			</div>
 			<div classes="rounded-b-lg bg-gray-800">

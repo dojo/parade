@@ -8,6 +8,7 @@ import MainMenu from './MainMenu';
 import Landing from './Landing';
 import SideMenu from './SideMenu';
 import Example from './Example';
+import StandaloneExample from './StandaloneExample';
 import Test from './Test';
 import Header from './Header';
 
@@ -52,8 +53,6 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const factory = create({ block, icache, theme }).properties<{ config: any }>();
-
 const Main = create({ icache, theme }).properties<{ config: any; widgetName?: string }>()(
 	({ properties, children, middleware: { theme, icache } }) => {
 		const { config, widgetName } = properties();
@@ -73,6 +72,7 @@ const Main = create({ icache, theme }).properties<{ config: any; widgetName?: st
 				<div classes="w-full max-w-screen-xl mx-auto px-6">
 					<div classes="lg:flex -mx-6">
 						<MainMenu
+							onThemeChange={changeTheme}
 							widgetName={widgetName}
 							config={config}
 							showMenu={!!icache.get('open')}
@@ -115,6 +115,8 @@ const Main = create({ icache, theme }).properties<{ config: any; widgetName?: st
 	}
 );
 
+const factory = create({ block, icache, theme }).properties<{ config: any }>();
+
 export default factory(function App({ properties, middleware: { block, icache, theme } }) {
 	const { config } = properties();
 	const widgetFilenames = getWidgetFileNames(config);
@@ -131,22 +133,13 @@ export default factory(function App({ properties, middleware: { block, icache, t
 			<Outlet
 				key="standalone-example"
 				id="standalone-example"
-				renderer={({ params, queryParams }) => {
-					let newTheme = config.themes[0].theme;
-					config.themes.forEach((theme: any, i: number) => {
-						if (theme.label === queryParams.theme) {
-							newTheme = config.themes[i].theme;
-						}
-					});
-					if (theme.get() !== newTheme) {
-						theme.set(newTheme);
-					}
-					const { widget: widgetName, example: exampleName } = params;
-					const isOverview = config.widgets[widgetName].overview.example.filename.toLowerCase() === exampleName
-					const example = isOverview ? config.widgets[widgetName].overview.example : config.widgets[widgetName].examples.find(
-							(e: any) => e.filename.toLowerCase() === exampleName
-						);
-					return <example.module />;
+				renderer={({ params: { widget, example }, queryParams: { theme } }) => {
+					return <StandaloneExample
+						widgetName={widget}
+						exampleName={example}
+						themeName={theme}
+						config={config}
+					/>
 				}}
 			/>
 			<Outlet
@@ -180,6 +173,7 @@ export default factory(function App({ properties, middleware: { block, icache, t
 					return (
 						<Main config={config} widgetName={widgetName}>
 							<Example
+								key={`${widgetName}-overview`}
 								widgetName={widgetName}
 								config={config}
 								widgetReadmes={widgetReadmeContent}
@@ -199,6 +193,7 @@ export default factory(function App({ properties, middleware: { block, icache, t
 					return (
 						<Main config={config} widgetName={widgetName}>
 							<Example
+								key={`${widgetName}-${exampleName}`}
 								widgetName={widgetName}
 								exampleName={exampleName}
 								config={config}
