@@ -8,7 +8,7 @@ import MainMenu from './MainMenu';
 import Landing from './Landing';
 import SideMenu from './SideMenu';
 import Example from './Example';
-import StandaloneExample from './StandaloneExample';
+import ExampleSandbox from './ExampleSandbox';
 import Test from './Test';
 import Header from './Header';
 
@@ -134,7 +134,7 @@ export default factory(function App({ properties, middleware: { block, icache, t
 				key="standalone-example"
 				id="standalone-example"
 				renderer={({ params: { widget, example }, queryParams: { theme } }) => {
-					return <StandaloneExample
+					return <ExampleSandbox
 						widgetName={widget}
 						exampleName={example}
 						themeName={theme}
