@@ -131,8 +131,8 @@ export default factory(function App({ properties, middleware: { block, icache, t
 	return (
 		<div>
 			<Outlet
-				key="standalone-example"
-				id="standalone-example"
+				key="sandbox-example"
+				id="sandbox-example"
 				renderer={({ params: { widget, example }, queryParams: { theme } }) => {
 					return <ExampleSandbox
 						widgetName={widget}

@@ -73,7 +73,7 @@ export default factory(function Example({ properties, middleware: { icache, them
 			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
 			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
-				{ example.sandbox ? <iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/standalone/${example.filename.toLowerCase()}?theme=${themeName}`}
+				{ example.sandbox ? <iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
 					classes="w-full"
 					styles={dimensions}
 				/> : <div key="example-container" styles={example.size ? dimensions : {} }><example.module /></div> }

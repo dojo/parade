@@ -21,8 +21,8 @@ export default [
 				outlet: 'example'
 			},
 			{
-				path: 'standalone/{example}',
-				outlet: 'standalone-example'
+				path: 'sandbox/{example}',
+				outlet: 'sandbox-example'
 			},
 
 		]
