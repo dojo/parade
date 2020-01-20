@@ -59,6 +59,14 @@ export default factory(function Example({ properties, middleware: { icache, them
 		return { height: '0px' };
 	});
 
+	if (example.size === 'small') {
+		dimensions.height = '100px';
+	} else if (example.size === 'medium') {
+		dimensions.height = '300px';
+	} else if (example.size === 'large') {
+		dimensions.height = '600px';
+	}
+
 	return (
 		<div>
 			{isOverview && <div innerHTML={widgetReadme} />}

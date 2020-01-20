@@ -32,7 +32,8 @@ export default {
 				{
 					filename: 'ButtonAdvanced',
 					module: ButtonAdvanced,
-					title: 'Button Advanced'
+					title: 'Button Advanced',
+					size: 'large'
 				}
 			]
 		},
