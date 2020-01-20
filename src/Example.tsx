@@ -1,12 +1,27 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
+import { create, tsx, destroy } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 import icache from '@dojo/framework/core/middleware/icache';
+import global from '@dojo/framework/shim/global';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
 
-const factory = create({ theme, icache }).properties<{
+const middleware = create({ destroy, icache });
+
+const postMessage = middleware(({ middleware: { destroy, icache }}) => {
+	const callback = (e: any) => {
+		const dimensions = JSON.parse(e.data);
+		icache.set('iframe-dimensions', dimensions);
+	}
+	global.window.addEventListener('message', callback);
+	destroy(() => {
+		global.window.removeEventListener('message', callback);
+	});
+	return () => icache.getOrSet<{ height: string }>('iframe-dimensions', { height: '0px' });
+});
+
+const factory = create({ theme, icache, postMessage }).properties<{
 	widgetName: string;
 	exampleName?: string;
 	widgetReadmes: any;
@@ -16,7 +31,7 @@ const factory = create({ theme, icache }).properties<{
 	config: any;
 }>();
 
-export default factory(function Example({ properties, middleware: { icache, theme } }) {
+export default factory(function Example({ properties, middleware: { icache, theme, postMessage } }) {
 	const {
 		config,
 		widgetName,
@@ -51,13 +66,7 @@ export default factory(function Example({ properties, middleware: { icache, them
 		}
 	});
 
-	const dimensions = icache.getOrSet('iframe-dimensions', () => {
-		window.addEventListener('message', (e) => {
-			const dimensions = JSON.parse(e.data);
-			icache.set('iframe-dimensions', dimensions);
-		});
-		return { height: '0px' };
-	});
+	const dimensions = postMessage();
 
 	if (example.size === 'small') {
 		dimensions.height = '100px';

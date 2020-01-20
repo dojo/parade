@@ -21,7 +21,7 @@ export interface WidgetExampleConfig {
 	module: any;
 	title?: string;
 	description?: string;
-	size?: 'auto' | 'small' | 'medium' | 'large'
+	size?: string;
 	sandbox?: boolean;
 }
 
