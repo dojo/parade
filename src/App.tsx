@@ -1,12 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import block from '@dojo/framework/core/middleware/block';
+import theme from '@dojo/framework/core/middleware/theme';
 import Outlet from '@dojo/framework/routing/Outlet';
 
 import MainMenu from './MainMenu';
 import Landing from './Landing';
 import SideMenu from './SideMenu';
 import Example from './Example';
+import ExampleSandbox from './ExampleSandbox';
 import Test from './Test';
 import Header from './Header';
 
@@ -51,11 +53,13 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const factory = create({ block, icache }).properties<{ config: any }>();
-
-const Main = create({ icache }).properties<{ config: any; widgetName?: string }>()(
-	({ properties, children, middleware: { icache } }) => {
+const Main = create({ icache, theme }).properties<{ config: any; widgetName?: string }>()(
+	({ properties, children, middleware: { theme, icache } }) => {
 		const { config, widgetName } = properties();
+		const changeTheme = (themeName: string) => {
+			const newTheme = config.themes[themeName].theme;
+			theme.set(newTheme);
+		};
 		return (
 			<div>
 				<Header
@@ -68,6 +72,7 @@ const Main = create({ icache }).properties<{ config: any; widgetName?: string }>
 				<div classes="w-full max-w-screen-xl mx-auto px-6">
 					<div classes="lg:flex -mx-6">
 						<MainMenu
+							onThemeChange={changeTheme}
 							widgetName={widgetName}
 							config={config}
 							showMenu={!!icache.get('open')}
@@ -94,6 +99,7 @@ const Main = create({ icache }).properties<{ config: any; widgetName?: string }>
 													<SideMenu
 														config={config}
 														widgetName={widgetName}
+														onThemeChange={changeTheme}
 													/>
 												)}
 											</div>
@@ -109,7 +115,9 @@ const Main = create({ icache }).properties<{ config: any; widgetName?: string }>
 	}
 );
 
-export default factory(function App({ properties, middleware: { block, icache } }) {
+const factory = create({ block, icache, theme }).properties<{ config: any }>();
+
+export default factory(function App({ properties, middleware: { block, icache, theme } }) {
 	const { config } = properties();
 	const widgetFilenames = getWidgetFileNames(config);
 	const exampleFilenames = getExampleFileNames(config);
@@ -122,6 +130,18 @@ export default factory(function App({ properties, middleware: { block, icache } 
 
 	return (
 		<div>
+			<Outlet
+				key="sandbox-example"
+				id="sandbox-example"
+				renderer={({ params: { widget, example }, queryParams: { theme } }) => {
+					return <ExampleSandbox
+						widgetName={widget}
+						exampleName={example}
+						themeName={theme}
+						config={config}
+					/>
+				}}
+			/>
 			<Outlet
 				key="landing"
 				id="landing"
@@ -153,6 +173,7 @@ export default factory(function App({ properties, middleware: { block, icache } 
 					return (
 						<Main config={config} widgetName={widgetName}>
 							<Example
+								key={`${widgetName}-overview`}
 								widgetName={widgetName}
 								config={config}
 								widgetReadmes={widgetReadmeContent}
@@ -172,6 +193,7 @@ export default factory(function App({ properties, middleware: { block, icache } 
 					return (
 						<Main config={config} widgetName={widgetName}>
 							<Example
+								key={`${widgetName}-${exampleName}`}
 								widgetName={widgetName}
 								exampleName={exampleName}
 								config={config}

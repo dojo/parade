@@ -1,10 +1,27 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
+import { create, tsx, destroy } from '@dojo/framework/core/vdom';
+import theme from '@dojo/framework/core/middleware/theme';
+import icache from '@dojo/framework/core/middleware/icache';
+import global from '@dojo/framework/shim/global';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
 
-const factory = create().properties<{
+const middleware = create({ destroy, icache });
+
+const postMessage = middleware(({ middleware: { destroy, icache }}) => {
+	const callback = (e: any) => {
+		const dimensions = JSON.parse(e.data);
+		icache.set('iframe-dimensions', dimensions);
+	}
+	global.window.addEventListener('message', callback);
+	destroy(() => {
+		global.window.removeEventListener('message', callback);
+	});
+	return () => icache.getOrSet<{ height: string }>('iframe-dimensions', { height: '0px' });
+});
+
+const factory = create({ theme, icache, postMessage }).properties<{
 	widgetName: string;
 	exampleName?: string;
 	widgetReadmes: any;
@@ -14,7 +31,7 @@ const factory = create().properties<{
 	config: any;
 }>();
 
-export default factory(function Example({ properties }) {
+export default factory(function Example({ properties, middleware: { icache, theme, postMessage } }) {
 	const {
 		config,
 		widgetName,
@@ -25,8 +42,8 @@ export default factory(function Example({ properties }) {
 		widgetThemes
 	} = properties();
 
-	const isExample = !exampleName;
-	const example = isExample
+	const isOverview = !exampleName;
+	const example = isOverview
 		? config.widgets[widgetName].overview.example
 		: config.widgets[widgetName].examples.find(
 				(e: any) => e.filename.toLowerCase() === exampleName
@@ -41,13 +58,34 @@ export default factory(function Example({ properties }) {
 	const widgetProperty = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
+	const currentTheme = theme.get();
+	let themeName = config.themes[0].label;
+	config.themes.forEach((theme: any, i: number) => {
+		if (currentTheme === theme.theme) {
+			themeName = theme.label;
+		}
+	});
+
+	const dimensions = postMessage();
+
+	if (example.size === 'small') {
+		dimensions.height = '100px';
+	} else if (example.size === 'medium') {
+		dimensions.height = '300px';
+	} else if (example.size === 'large') {
+		dimensions.height = '600px';
+	}
+
 	return (
 		<div>
-			{isExample && <div innerHTML={widgetReadme} />}
-			{isExample && <HorizontalRule />}
+			{isOverview && <div innerHTML={widgetReadme} />}
+			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
 			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
-				<example.module />
+				{ example.sandbox ? <iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
+					classes="w-full"
+					styles={dimensions}
+				/> : <div key="example-container" styles={example.size ? dimensions : {} }><example.module /></div> }
 			</div>
 			<div classes="rounded-b-lg bg-gray-800">
 				<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
@@ -64,8 +102,8 @@ export default factory(function Example({ properties }) {
 					</a>
 				</div>
 			)}
-			{isExample && <PropertyTable props={widgetProperty} />}
-			{isExample && <ThemeTable themes={widgetTheme} />}
+			{isOverview && <PropertyTable props={widgetProperty} />}
+			{isOverview && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);
 });

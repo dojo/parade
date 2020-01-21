@@ -6,6 +6,7 @@ const factory = create().properties<{
 	config: any;
 	showMenu: boolean;
 	widgetName?: string;
+	onThemeChange: (themeName: string) => void;
 	onMenuItemClick: () => void;
 }>();
 
@@ -17,7 +18,7 @@ function formatWidgetName(widget: string) {
 }
 
 export default factory(function MainMenu({ properties }) {
-	const { config, showMenu, onMenuItemClick, widgetName } = properties();
+	const { config, showMenu, onMenuItemClick, widgetName, onThemeChange } = properties();
 
 	const widgets = Object.keys(config.widgets).sort();
 	return (
@@ -54,7 +55,7 @@ export default factory(function MainMenu({ properties }) {
 						})}
 						<div classes="xl:hidden block w-2/3">
 							<hr classes="mt-10 my-1 border-b-2 border-gray-200" />
-							{widgetName && <SideMenu config={config} widgetName={widgetName} />}
+							{widgetName && <SideMenu onThemeChange={ onThemeChange } config={config} widgetName={widgetName} />}
 						</div>
 					</div>
 				</nav>

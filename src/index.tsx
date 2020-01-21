@@ -21,6 +21,8 @@ export interface WidgetExampleConfig {
 	module: any;
 	title?: string;
 	description?: string;
+	size?: string;
+	sandbox?: boolean;
 }
 
 export interface WidgetConfig {
