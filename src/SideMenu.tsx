@@ -19,7 +19,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 	return (
 		<div classes="flex flex-col justify-between overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
 			<div classes="mb-8">
-				<h5 classes="text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">
+				<h5 classes="text-gray-500 h uppercase tracking-wide font-bold text-sm lg:text-xs">
 					{widgetName}
 				</h5>
 				<ul classes="list mt-4 overflow-x-hidden">
@@ -48,7 +48,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 					)}
 				</ul>
 				{config.widgets[widgetName].examples && <virtual>
-					<hr classes="my-1 border-b-2 border-gray-200" />
+					<hr classes="hr my-1 border-b-2 border-gray-200" />
 					<ul classes="list mt-4 overflow-x-hidden">
 						{(config.widgets[widgetName].examples || []).map((example: any) => {
 							return (
@@ -70,7 +70,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						})}
 					</ul>
 				</virtual>}
-				<hr classes="my-1 border-b-2 border-gray-200" />
+				<hr classes="hr my-1 border-b-2 border-gray-200" />
 				<ul classes="list mt-4 overflow-x-hidden">
 					<li classes="mb-2">
 						<div classes="text-gray-600 font-medium">Theme</div>

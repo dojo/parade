@@ -9,11 +9,11 @@ const factory = create().properties<{
 export default factory(function Header({ properties }) {
 	const { config, onMenuToggle, open } = properties();
 	return (
-		<div classes="flex bg-white border-b border-gray-200 fixed top-0 inset-x-0 z-100 h-16 items-center">
+		<div classes="flex header bg-white border-b border-gray-200 fixed top-0 inset-x-0 z-100 h-16 items-center">
 			<div classes="w-full max-w-screen-xl relative mx-auto px-6">
 				<div classes="flex items-center -mx-6">
 					<div classes="lg:w-1/4 xl:w-1/5 pl-6 pr-6 lg:pr-8">
-						<h1 classes="text-4xl">{config.name || 'Parade'}</h1>
+						<h1 classes="h text-4xl">{config.name || 'Parade'}</h1>
 					</div>
 					<div class="flex flex-grow lg:w-3/4 xl:w-4/5">
 						<div class="w-full lg:px-6 xl:w-3/4 xl:px-12">
