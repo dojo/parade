@@ -1,4 +1,53 @@
-@import url('~tailwindcss/dist/tailwind.min.css');
+@import url('~tailwindcss/dist/components.min.css');
+@import url('~tailwindcss/dist/utilities.min.css');
+
+html {
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+	line-height: 1.5; /* 2 */
+}
+
+.text-xl, .text-2xl, .text-3xl, .text-4xl {
+	font-weight: inherit;
+}
+
+.select {
+	font-family: inherit;
+	font-size: 100%;
+}
+
+.list {
+	list-style: none;
+	margin: 0;
+    padding: 0;
+}
+
+.table {
+	border-collapse: collapse;
+}
+
+.table *, :after, :before {
+	box-sizing: border-box;
+    border: 0 solid #e2e8f0;
+}
+
+.hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+  border-top-width: 1px;
+}
+
+html {
+	line-height: 1.15; /* 1 */
+	-webkit-text-size-adjust: 100%; /* 2 */
+	box-sizing: border-box; /* 1 */
+	font-family: sans-serif; /* 2 */
+}
+
+h1 {
+	font-size: 2em;
+	margin: 0.67em 0;
+}
 
 .top-16 {
 	top: 4rem !important;
@@ -29,68 +78,68 @@ h1 {
 }
 
 *,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 
-html {
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
+	html {
+		font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
 		Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-	font-weight: 300;
-	font-size: 16px;
-	line-height: 1.65;
-	-webkit-text-size-adjust: 100%;
-	background: #ffffff;
-	color: #333;
-}
+		font-weight: 300;
+		font-size: 16px;
+		line-height: 1.65;
+		-webkit-text-size-adjust: 100%;
+		background: #ffffff;
+		color: #333;
+	}
 
-body {
-	margin: 0;
-	padding: 0;
-	overscroll-behavior-y: none;
-}
+	body {
+		margin: 0;
+		padding: 0;
+		overscroll-behavior-y: none;
+	}
 
-pre,
-code {
-	font-size: 14px;
-	color: #000;
-	text-shadow: 0 1px #fff;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	word-wrap: normal;
-	line-height: 1.5;
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
-}
+	pre,
+	code {
+		font-size: 14px;
+		color: #000;
+		text-shadow: 0 1px #fff;
+		font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+		text-align: left;
+		white-space: pre;
+		word-spacing: normal;
+		word-break: normal;
+		word-wrap: normal;
+		line-height: 1.5;
+		-moz-tab-size: 4;
+		-o-tab-size: 4;
+		tab-size: 4;
+		-webkit-hyphens: none;
+		-moz-hyphens: none;
+		-ms-hyphens: none;
+		hyphens: none;
+	}
 
-pre[class*='language-'] {
-	overflow: auto;
-}
+	pre[class*='language-'] {
+		overflow: auto;
+	}
 
-em {
-	font-style: normal;
-}
+	em {
+		font-style: normal;
+	}
 
-a {
-	text-decoration: none;
-	color: inherit;
-}
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
 
-/**
- * Dracula Theme originally by Zeno Rocha [@zenorocha]
- * https://draculatheme.com/
- *
- * Ported for PrismJS by Albert Vallverdu [@byverdu]
- */
+	/**
+	 * Dracula Theme originally by Zeno Rocha [@zenorocha]
+	 * https://draculatheme.com/
+	 *
+	 * Ported for PrismJS by Albert Vallverdu [@byverdu]
+	 */
 
 code[class*='language-'],
 pre[class*='language-'] {

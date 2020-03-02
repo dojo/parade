@@ -22,7 +22,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 				<h5 classes="text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">
 					{widgetName}
 				</h5>
-				<ul classes="mt-4 overflow-x-hidden">
+				<ul classes="list mt-4 overflow-x-hidden">
 					<li classes="mb-2">
 						<ActiveLink
 							classes="block transition-fast hover:translate-r-2px hover:text-gray-900 text-gray-600 font-medium"
@@ -49,7 +49,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 				</ul>
 				{config.widgets[widgetName].examples && <virtual>
 					<hr classes="my-1 border-b-2 border-gray-200" />
-					<ul classes="mt-4 overflow-x-hidden">
+					<ul classes="list mt-4 overflow-x-hidden">
 						{(config.widgets[widgetName].examples || []).map((example: any) => {
 							return (
 								<li classes="mb-2">
@@ -71,7 +71,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 					</ul>
 				</virtual>}
 				<hr classes="my-1 border-b-2 border-gray-200" />
-				<ul classes="mt-4 overflow-x-hidden">
+				<ul classes="list mt-4 overflow-x-hidden">
 					<li classes="mb-2">
 						<div classes="text-gray-600 font-medium">Theme</div>
 						<div classes="inline-block relative w-4/5">
@@ -80,7 +80,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 									const themeName = (e.target as HTMLInputElement).value;
 									onThemeChange(themeName);
 								}}
-								classes="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+								classes="select block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
 							>
 								{config.themes.map((theme: any, i: number) => {
 									return (
