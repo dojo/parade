@@ -1,23 +1,24 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import HorizontalRule from './HorizontalRule';
 import RoundedBox from './RoundedBox';
-import { PropertyInterface } from './properties.block';
+import { PropertyInterface } from './interfaces.block';
 
-interface PropertyTableProperties {
+interface InterfaceTableProperties {
 	props?: PropertyInterface[];
+	tableName?: string;
 }
 
-const factory = create().properties<PropertyTableProperties>();
+const factory = create().properties<InterfaceTableProperties>();
 
-export default factory(function PropertyTable({ properties }) {
-	const { props } = properties();
+export default factory(function InterfaceTable({ properties }) {
+	const { props, tableName = "Properties" } = properties();
 	if (!props) {
 		return null;
 	}
 	return (
 		<virtual>
 			<HorizontalRule />
-			<h2 classes="text-2xl mb-4">Properties</h2>
+			<h2 classes="text-2xl mb-4">{tableName}</h2>
 			<RoundedBox>
 				<table>
 					<thead>

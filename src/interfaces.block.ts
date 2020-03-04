@@ -1,11 +1,11 @@
 import * as path from 'canonical-path';
 import { Project, MethodSignature, PropertySignature, Type } from 'ts-morph';
 
-function getPropertyInterfaceName(value: string) {
+function getInterfaceName(value: string, type = 'Properties') {
 	const result = value.replace(/-([a-z])/g, function(g) {
 		return g[1].toUpperCase();
 	});
-	return `${result.charAt(0).toUpperCase() + result.slice(1)}Properties`;
+	return `${result.charAt(0).toUpperCase() + result.slice(1)}${type}`;
 }
 
 export interface PropertyInterface {
@@ -50,14 +50,14 @@ export default function(config: { [index: string]: string }) {
 			return props;
 		}
 
-		const propsInterfaceTypeName = getPropertyInterfaceName(widgetName);
+		const propsInterfaceTypeName = getInterfaceName(widgetName);
 		const propsInterface =
 			sourceFile.getInterface(propsInterfaceTypeName) ||
 			sourceFile.getTypeAlias(propsInterfaceTypeName);
 
 		if (!propsInterface) {
 			console.warn(
-				`could not find interface or type for ${widgetName} ${propsInterfaceTypeName}`
+				`could not find interface for ${widgetName} ${getInterfaceName(widgetName)}`
 			);
 			return props;
 		}
@@ -97,6 +97,12 @@ export default function(config: { [index: string]: string }) {
 			}
 			return 0;
 		});
-		return { ...props, [widgetName]: properties };
+
+		const childrenInterfaceTypeName = getInterfaceName(widgetName, 'Children');
+		const childrenInterface =
+			sourceFile.getInterface(childrenInterfaceTypeName) ||
+			sourceFile.getTypeAlias(childrenInterfaceTypeName);
+		let children = childrenInterface && getWidgetProperties(childrenInterface.getType());
+		return { ...props, [widgetName]: { properties, children } };
 	}, {});
 }

@@ -13,7 +13,7 @@ import Test from './Test';
 import Header from './Header';
 
 import readme from './readme.block';
-import getWidgetProperties from './properties.block';
+import getWidgetProperties from './interfaces.block';
 import getTheme from './theme.block';
 import code from './code.block';
 

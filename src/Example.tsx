@@ -5,7 +5,7 @@ import global from '@dojo/framework/shim/global';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
-import PropertyTable from './PropertyTable';
+import InterfaceTable from './InterfaceTable';
 
 const middleware = create({ destroy, icache });
 
@@ -55,7 +55,7 @@ export default factory(function Example({ properties, middleware: { icache, them
 
 	const widgetReadme = widgetReadmes[readmePath];
 	const widgetExample = widgetExamples[examplePath];
-	const widgetProperty = widgetProperties[widgetName];
+	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
 	const currentTheme = theme.get();
@@ -102,7 +102,8 @@ export default factory(function Example({ properties, middleware: { icache, them
 					</a>
 				</div>
 			)}
-			{isOverview && <PropertyTable props={widgetProperty} />}
+			{isOverview && <InterfaceTable props={widgetProperty} />}
+			{isOverview && widgetChildren && <InterfaceTable props={widgetChildren} tableName="Children"/>}
 			{isOverview && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);
