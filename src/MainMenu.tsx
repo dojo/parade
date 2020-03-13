@@ -38,7 +38,7 @@ export default factory(function MainMenu({ properties }) {
 						>
 							Home
 						</ActiveLink>
-						<hr classes="my-1 border-b-2 border-gray-200" />
+						<hr classes="hr my-1 border-b-2 border-gray-200" />
 						{widgets.map((widget) => {
 							return (
 								<ActiveLink
@@ -54,7 +54,7 @@ export default factory(function MainMenu({ properties }) {
 							);
 						})}
 						<div classes="xl:hidden block w-2/3">
-							<hr classes="mt-10 my-1 border-b-2 border-gray-200" />
+							<hr classes="hr mt-10 my-1 border-b-2 border-gray-200" />
 							{widgetName && <SideMenu onThemeChange={ onThemeChange } config={config} widgetName={widgetName} />}
 						</div>
 					</div>
