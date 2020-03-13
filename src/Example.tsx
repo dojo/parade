@@ -80,10 +80,10 @@ export default factory(function Example({ properties, middleware: { icache, them
 		<div>
 			{isOverview && <div innerHTML={widgetReadme} />}
 			{isOverview && <HorizontalRule />}
-			<h2 classes="text-2xl mb-4">{example.title || 'Example'}</h2>
-			<div classes="bg-white rounded-t-lg overflow-hidden border-t border-l border-r border-gray-400 p-4">
+			<h2 classes="text-2xl h mb-4">{example.title || 'Example'}</h2>
+			<div classes="bg-white rounded-t-lg overflow-hidden border-b-0 border-t border-l border-r border-gray-400 p-4">
 				{ example.sandbox ? <iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
-					classes="w-full"
+					classes="w-full iframe"
 					styles={dimensions}
 				/> : <div key="example-container" styles={example.size ? dimensions : {} }><example.module /></div> }
 			</div>
