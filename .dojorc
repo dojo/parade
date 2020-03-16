@@ -4,30 +4,30 @@
 		"externals": {
 			"outputPath": ".",
 			"dependencies": [
-				{
-					"from": "node_modules/intern/browser/intern.js",
-					"to": "browser/intern.js"
-				},
-				{
-					"from": "node_modules/intern/browser/config.js",
-					"to": "browser/config.js"
-				},
-				{
-					"from": "node_modules/intern/loaders/default.js",
-					"to": "intern/loaders/default.js"
-				},
-				{
-					"from": "node_modules/intern/loaders/default.js",
-					"to": "loaders/default.js"
-				},
-				{
-					"from": "node_modules/intern/index.html",
-					"to": "intern/index.html"
-				},
-				{
-					"from": "intern",
-					"to": "intern"
-				}
+			{
+				"from": "node_modules/intern/browser/intern.js",
+				"to": "intern/browser/intern.js"
+			},
+			{
+				"from": "node_modules/intern/browser/config.js",
+				"to": "intern/browser/config.js"
+			},
+			{
+				"from": "node_modules/intern/loaders/default.js",
+				"to": "intern/loaders/default.js"
+			},
+			{
+				"from": "node_modules/intern/loaders/default.js",
+				"to": "loaders/default.js"
+			},
+			{
+				"from": "node_modules/intern/index.html",
+				"to": "intern/index.html"
+			},
+			{
+				"from": "intern",
+				"to": "intern"
+			}
 			]
 		}
 	},
