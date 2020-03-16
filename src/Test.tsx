@@ -8,7 +8,7 @@ export default factory(function Test({ properties }) {
 		<div>
 			<h2 classes="text-2xl mb-4">Tests</h2>
 			<iframe
-				classes="w-full"
+				classes="w-full iframe"
 				onload={
 					"this.style.height=(this.contentDocument.body.scrollHeight || 10000) +'px';" as any
 				}

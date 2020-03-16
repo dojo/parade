@@ -26,7 +26,7 @@ export default factory(function Header({ properties }) {
 								onMenuToggle(!open);
 							}}
 							class={`${
-								open ? 'hidden' : ''
+								open ? 'hidden' : 'responsiveButton'
 							} flex px-6 items-center lg:hidden text-gray-500 focus:outline-none focus:text-gray-700`}
 						>
 							<svg
@@ -44,7 +44,7 @@ export default factory(function Header({ properties }) {
 								onMenuToggle(!open);
 							}}
 							class={`${
-								open ? '' : 'hidden'
+								open ? 'responsiveButton' : 'hidden'
 							} flex px-6 items-center lg:hidden text-gray-500 focus:outline-none focus:text-gray-700`}
 						>
 							<svg

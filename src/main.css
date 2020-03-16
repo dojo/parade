@@ -64,8 +64,16 @@ html {
 	border-style: solid;
 }
 
+.border-r-0 {
+	border-right-width: 0;
+}
+
 .border-r {
 	border-right-width: 1px;
+}
+
+.border-b-0 {
+	border-bottom-width: 0;
 }
 
 .border-b {
@@ -76,12 +84,30 @@ html {
 	border-bottom-width: 2px;
 }
 
+.border-t-0 {
+	border-top-width: 0;
+}
+
 .border-t {
 	border-top-width: 1px;
 }
 
+.border-l-0 {
+	border-left-width: 0;
+}
+
 .border-l {
 	border-left-width: 1px;
+}
+
+.iframe {
+	border: 0;
+}
+
+.responsiveButton {
+	border: 0;
+    padding-top: 0;
+	padding-bottom: 0;
 }
 
 html {
@@ -208,6 +234,8 @@ pre[class*='language-'] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 /* Inline code */
