@@ -1,6 +1,5 @@
 {
 	"build-app": {
-		"omit-hash": true,
 		"experimental": {
 			"speed": true
 		},
