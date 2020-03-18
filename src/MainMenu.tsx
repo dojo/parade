@@ -55,7 +55,13 @@ export default factory(function MainMenu({ properties }) {
 						})}
 						<div classes="xl:hidden block w-2/3">
 							<hr classes="hr mt-10 my-1 border-b-2 border-gray-200" />
-							{widgetName && <SideMenu onThemeChange={ onThemeChange } config={config} widgetName={widgetName} />}
+							{widgetName && (
+								<SideMenu
+									onThemeChange={onThemeChange}
+									config={config}
+									widgetName={widgetName}
+								/>
+							)}
 						</div>
 					</div>
 				</nav>

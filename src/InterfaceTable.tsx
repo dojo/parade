@@ -11,7 +11,7 @@ interface InterfaceTableProperties {
 const factory = create().properties<InterfaceTableProperties>();
 
 export default factory(function InterfaceTable({ properties }) {
-	const { props, tableName = "Properties" } = properties();
+	const { props, tableName = 'Properties' } = properties();
 	if (!props) {
 		return null;
 	}

@@ -23,8 +23,7 @@ export default [
 			{
 				path: 'sandbox/{example}',
 				outlet: 'sandbox-example'
-			},
-
+			}
 		]
 	}
 ];

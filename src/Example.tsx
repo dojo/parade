@@ -9,11 +9,11 @@ import InterfaceTable from './InterfaceTable';
 
 const middleware = create({ destroy, icache });
 
-const postMessage = middleware(({ middleware: { destroy, icache }}) => {
+const postMessage = middleware(({ middleware: { destroy, icache } }) => {
 	const callback = (e: any) => {
 		const dimensions = JSON.parse(e.data);
 		icache.set('iframe-dimensions', dimensions);
-	}
+	};
 	global.window.addEventListener('message', callback);
 	destroy(() => {
 		global.window.removeEventListener('message', callback);
@@ -31,7 +31,10 @@ const factory = create({ theme, icache, postMessage }).properties<{
 	config: any;
 }>();
 
-export default factory(function Example({ properties, middleware: { icache, theme, postMessage } }) {
+export default factory(function Example({
+	properties,
+	middleware: { icache, theme, postMessage }
+}) {
 	const {
 		config,
 		widgetName,
@@ -82,10 +85,19 @@ export default factory(function Example({ properties, middleware: { icache, them
 			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl h mb-4">{example.title || 'Example'}</h2>
 			<div classes="bg-white rounded-t-lg overflow-hidden border-b-0 border-t border-l border-r border-gray-400 p-4">
-				{ example.sandbox ? <iframe src={`?cacheBust=${widgetName}-${example.filename}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
-					classes="w-full iframe"
-					styles={dimensions}
-				/> : <div key="example-container" styles={example.size ? dimensions : {} }><example.module /></div> }
+				{example.sandbox ? (
+					<iframe
+						src={`?cacheBust=${widgetName}-${
+							example.filename
+						}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
+						classes="w-full iframe"
+						styles={dimensions}
+					/>
+				) : (
+					<div key="example-container" styles={example.size ? dimensions : {}}>
+						<example.module />
+					</div>
+				)}
 			</div>
 			<div classes="rounded-b-lg bg-gray-800">
 				<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
@@ -103,7 +115,9 @@ export default factory(function Example({ properties, middleware: { icache, them
 				</div>
 			)}
 			{isOverview && <InterfaceTable props={widgetProperty} />}
-			{isOverview && widgetChildren && <InterfaceTable props={widgetChildren} tableName="Children"/>}
+			{isOverview && widgetChildren && (
+				<InterfaceTable props={widgetChildren} tableName="Children" />
+			)}
 			{isOverview && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);

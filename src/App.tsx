@@ -134,12 +134,14 @@ export default factory(function App({ properties, middleware: { block, icache, t
 				key="sandbox-example"
 				id="sandbox-example"
 				renderer={({ params: { widget, example }, queryParams: { theme } }) => {
-					return <ExampleSandbox
-						widgetName={widget}
-						exampleName={example}
-						themeName={theme}
-						config={config}
-					/>
+					return (
+						<ExampleSandbox
+							widgetName={widget}
+							exampleName={example}
+							themeName={theme}
+							config={config}
+						/>
+					);
 				}}
 			/>
 			<Outlet

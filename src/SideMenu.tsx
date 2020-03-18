@@ -3,7 +3,11 @@ import theme from '@dojo/framework/core/middleware/theme';
 
 import ActiveLink from './ActiveLink';
 
-const factory = create({ theme }).properties<{ widgetName: string; config: any, onThemeChange: (theme: string) => void }>();
+const factory = create({ theme }).properties<{
+	widgetName: string;
+	config: any;
+	onThemeChange: (theme: string) => void;
+}>();
 
 export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const { widgetName, config, onThemeChange } = properties();
@@ -47,29 +51,31 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						</li>
 					)}
 				</ul>
-				{config.widgets[widgetName].examples && <virtual>
-					<hr classes="hr my-1 border-b-2 border-gray-200" />
-					<ul classes="list mt-4 overflow-x-hidden">
-						{(config.widgets[widgetName].examples || []).map((example: any) => {
-							return (
-								<li classes="mb-2">
-									<ActiveLink
-										key={example.filename}
-										classes="block transition-fast hover:translate-r-2px hover:text-gray-900 text-gray-600 font-medium"
-										to="example"
-										params={{
-											widget: widgetName,
-											example: example.filename.toLowerCase()
-										}}
-										activeClasses={['font-bold']}
-									>
-										{example.filename.replace(/([A-Z])/g, ' $1').trim()}
-									</ActiveLink>
-								</li>
-							);
-						})}
-					</ul>
-				</virtual>}
+				{config.widgets[widgetName].examples && (
+					<virtual>
+						<hr classes="hr my-1 border-b-2 border-gray-200" />
+						<ul classes="list mt-4 overflow-x-hidden">
+							{(config.widgets[widgetName].examples || []).map((example: any) => {
+								return (
+									<li classes="mb-2">
+										<ActiveLink
+											key={example.filename}
+											classes="block transition-fast hover:translate-r-2px hover:text-gray-900 text-gray-600 font-medium"
+											to="example"
+											params={{
+												widget: widgetName,
+												example: example.filename.toLowerCase()
+											}}
+											activeClasses={['font-bold']}
+										>
+											{example.filename.replace(/([A-Z])/g, ' $1').trim()}
+										</ActiveLink>
+									</li>
+								);
+							})}
+						</ul>
+					</virtual>
+				)}
 				<hr classes="hr my-1 border-b-2 border-gray-200" />
 				<ul classes="list mt-4 overflow-x-hidden">
 					<li classes="mb-2">

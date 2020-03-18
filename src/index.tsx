@@ -30,19 +30,19 @@ export interface WidgetConfig {
 	overview: {
 		example: WidgetExampleConfig;
 	};
-	examples?: WidgetExampleConfig[]
+	examples?: WidgetExampleConfig[];
 }
 
 export interface Config {
 	name: string;
 	themes: ConfigThemes[];
-	tests?: any,
+	tests?: any;
 	home: string;
 	readmePath: (widget: string) => string;
 	widgetPath: (widget: string, filename: string) => string;
 	examplePath: (widget: string, filename: string) => string;
 	codesandboxPath?: (widget: string, filename: string) => string;
-	widgets: { [index: string]: WidgetConfig; }
+	widgets: { [index: string]: WidgetConfig };
 }
 
 export default ({ config }: { config: Config }) => {
