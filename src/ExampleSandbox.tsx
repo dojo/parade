@@ -3,9 +3,9 @@ import theme from '@dojo/framework/core/middleware/theme';
 import resize from '@dojo/framework/core/middleware/resize';
 
 const factory = create({ theme, resize }).properties<{
-	themeName: string,
-	config: any
-	widgetName: string,
+	themeName: string;
+	config: any;
+	widgetName: string;
 	exampleName: string;
 }>();
 
@@ -24,9 +24,16 @@ export default factory(function Example({ properties, middleware: { theme, resiz
 	if (height) {
 		parent.postMessage(JSON.stringify({ height: `${height}px` }), '*');
 	}
-	const isOverview = config.widgets[widgetName].overview.example.filename.toLowerCase() === exampleName
-	const example = isOverview ? config.widgets[widgetName].overview.example : config.widgets[widgetName].examples.find(
-			(e: any) => e.filename.toLowerCase() === exampleName
-		);
-	return <div key="example-container"><example.module /></div>;
+	const isOverview =
+		config.widgets[widgetName].overview.example.filename.toLowerCase() === exampleName;
+	const example = isOverview
+		? config.widgets[widgetName].overview.example
+		: config.widgets[widgetName].examples.find(
+				(e: any) => e.filename.toLowerCase() === exampleName
+		  );
+	return (
+		<div key="example-container">
+			<example.module />
+		</div>
+	);
 });

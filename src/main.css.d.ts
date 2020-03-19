@@ -5,6 +5,8 @@ export const h: string;
 export const table: string;
 export const hr: string;
 export const border: string;
+export const iframe: string;
+export const responsiveButton: string;
 export const token: string;
 export const comment: string;
 export const prolog: string;

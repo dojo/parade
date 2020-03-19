@@ -1,6 +1,9 @@
 import ButtonExample from './ButtonExample';
 import ButtonAdvanced from './ButtonAdvanced';
 import InputExample from './InputExample';
+import NamedButtonExample from './NamedButtonExample';
+import DefaultClassButtonExample from './DefaultClassButtonExample';
+import NamedClassButtonExample from './NamedClassButtonExample';
 
 import red from './theme/red';
 import blue from './theme/blue';
@@ -44,6 +47,33 @@ export default {
 				example: {
 					filename: 'InputExample',
 					module: InputExample
+				}
+			}
+		},
+		NamedButton: {
+			filename: 'NamedButton',
+			overview: {
+				example: {
+					filename: 'NamedButtonExample',
+					module: NamedButtonExample
+				}
+			}
+		},
+		DefaultClassButton: {
+			filename: 'DefaultClassButton',
+			overview: {
+				example: {
+					filename: 'DefaultClassButtonExample',
+					module: DefaultClassButtonExample
+				}
+			}
+		},
+		NamedClassButton: {
+			filename: 'NamedClassButton',
+			overview: {
+				example: {
+					filename: 'NamedClassButtonExample',
+					module: NamedClassButtonExample
 				}
 			}
 		}
