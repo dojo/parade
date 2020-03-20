@@ -68,8 +68,6 @@ export default factory(function Example({
 	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
-
-
 	const dimensions = postMessage();
 
 	if (example.size === 'small') {
