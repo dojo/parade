@@ -1,3 +1,4 @@
+import global from '@dojo/framework/shim/global';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import block from '@dojo/framework/core/middleware/block';
@@ -122,11 +123,12 @@ export default factory(function App({ properties, middleware: { block, icache, t
 	const widgetFilenames = getWidgetFileNames(config);
 	const exampleFilenames = getExampleFileNames(config);
 	const readmeFilenames = getReadmeFileNames(config);
+	const isCodeSandbox = !!global.window.csbJsonP;
 
-	const widgetReadmeContent = block(readme)(readmeFilenames) || {};
-	const widgetExampleContent = block(code)(exampleFilenames) || {};
-	const widgetProperties = block(getWidgetProperties)(widgetFilenames) || {};
-	const widgetThemeClasses = block(getTheme)(widgetFilenames) || {};
+	const widgetReadmeContent = isCodeSandbox ? {} : block(readme)(readmeFilenames) || {};
+	const widgetExampleContent = isCodeSandbox ? {} : block(code)(exampleFilenames) || {};
+	const widgetProperties = isCodeSandbox ? {} : block(getWidgetProperties)(widgetFilenames) || {};
+	const widgetThemeClasses = isCodeSandbox ? {} : block(getTheme)(widgetFilenames) || {};
 
 	return (
 		<div>
