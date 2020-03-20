@@ -1,6 +1,6 @@
 {
   "name": "@dojo/parade",
-  "version": "0.0.11-pre",
+  "version": "0.0.11",
   "scripts": {
     "dev": "dojo build app -m dev -w -s",
     "start": "npm run dev",
