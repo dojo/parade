@@ -41,7 +41,7 @@ export interface Config {
 	readmePath: (widget: string) => string;
 	widgetPath: (widget: string, filename: string) => string;
 	examplePath: (widget: string, filename: string) => string;
-	codesandboxPath?: (widget: string, filename: string) => string;
+	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
 	widgets: { [index: string]: WidgetConfig };
 }
 

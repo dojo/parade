@@ -45,6 +45,13 @@ export default factory(function Example({
 		widgetThemes
 	} = properties();
 
+	const currentTheme = theme.get();
+	let themeName = config.themes[0].label;
+	config.themes.forEach((theme: any, i: number) => {
+		if (currentTheme === theme.theme) {
+			themeName = theme.label;
+		}
+	});
 	const isOverview = !exampleName;
 	const example = isOverview
 		? config.widgets[widgetName].overview.example
@@ -52,7 +59,7 @@ export default factory(function Example({
 				(e: any) => e.filename.toLowerCase() === exampleName
 		  );
 	const codesandboxPath =
-		config.codesandboxPath && config.codesandboxPath(widgetName, example.filename);
+		config.codesandboxPath && config.codesandboxPath(widgetName, example.filename, themeName);
 	const examplePath = config.examplePath(widgetName, example.filename);
 	const readmePath = config.readmePath(widgetName);
 
@@ -61,13 +68,7 @@ export default factory(function Example({
 	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
-	const currentTheme = theme.get();
-	let themeName = config.themes[0].label;
-	config.themes.forEach((theme: any, i: number) => {
-		if (currentTheme === theme.theme) {
-			themeName = theme.label;
-		}
-	});
+
 
 	const dimensions = postMessage();
 
