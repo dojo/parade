@@ -105,3 +105,13 @@ tr.testResult.passed {
 }
 `;
 document.head.appendChild(style);
+for (var i = 0; i < document.styleSheets.length; i++) {
+	var stylesheet = document.styleSheets[i];
+	Object.defineProperty(stylesheet, 'disabled', {
+		get: function () {
+			return false;
+		},
+		set: function () {
+		}
+	});
+}
