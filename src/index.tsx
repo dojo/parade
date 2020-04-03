@@ -4,7 +4,7 @@ import Registry from '@dojo/framework/core/Registry';
 import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import transition from '@dojo/framework/core/animations/cssTransitions';
-import { Theme } from '@dojo/framework/core/middleware/theme';
+import { ThemeWithVariants, Theme } from '@dojo/framework/core/interfaces';
 
 import './main.css';
 
@@ -13,7 +13,7 @@ import App from './App';
 
 export interface ConfigThemes {
 	label: string;
-	theme: Theme;
+	theme: Theme | ThemeWithVariants;
 }
 
 export interface WidgetExampleConfig {
