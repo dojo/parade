@@ -5,11 +5,11 @@ import * as dark from './variants/dark.m.css';
 
 export default {
 	theme: {
-        '@dojo/parade/button': button
-    },
-    variants: {
-        default: light,
-        dark,
-        light
-    }
+		'@dojo/parade/button': button
+	},
+	variants: {
+		default: light,
+		dark,
+		light
+	}
 };

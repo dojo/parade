@@ -11,7 +11,7 @@ import blue from './theme/blue';
 export default {
 	name: '@dojo/widgets',
 	themes: [
-        { label: 'Blue', theme: blue },
+		{ label: 'Blue', theme: blue },
 		{ label: 'Red', theme: red },
 		{ label: 'default', theme: {} }
 	],

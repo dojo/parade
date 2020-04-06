@@ -58,7 +58,7 @@ export default ({ config }: { config: Config }) => {
 		});
 	} else {
 		const registry = new Registry();
-        const [theme] = themes;
+		const [theme] = themes;
 		registerThemeInjector(theme.theme, registry);
 		registerRouterInjector(routes, registry);
 
