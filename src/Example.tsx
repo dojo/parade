@@ -48,7 +48,11 @@ export default factory(function Example({
 	const currentTheme = theme.get();
 	let themeName = config.themes[0].label;
 	config.themes.forEach((theme: any, i: number) => {
-		if (currentTheme === theme.theme) {
+		if (currentTheme && currentTheme.variant) {
+			if (currentTheme.theme === theme.theme.theme) {
+				themeName = theme.label;
+			}
+		} else if (currentTheme === theme.theme) {
 			themeName = theme.label;
 		}
 	});

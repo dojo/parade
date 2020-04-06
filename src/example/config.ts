@@ -11,8 +11,9 @@ import blue from './theme/blue';
 export default {
 	name: '@dojo/widgets',
 	themes: [
+		{ label: 'Blue', theme: blue },
 		{ label: 'Red', theme: red },
-		{ label: 'Blue', theme: blue }
+		{ label: 'default', theme: {} }
 	],
 	tests: (require as any).context('./', true, /\.spec\.ts(x)?$/),
 	home: 'src/example/home.md',

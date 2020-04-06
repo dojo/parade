@@ -15,7 +15,12 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const currentTheme = theme.get();
 	let currentThemeIndex = 0;
 	config.themes.some((theme: any, i: number) => {
-		if (currentTheme === theme.theme) {
+		if (currentTheme && currentTheme.variant) {
+			if (currentTheme.theme === theme.theme.theme) {
+				currentThemeIndex = i;
+				return true;
+			}
+		} else if (currentTheme === theme.theme) {
 			currentThemeIndex = i;
 			return true;
 		}
