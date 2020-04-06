@@ -14,11 +14,18 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 
 	const currentTheme = theme.get();
 	let currentThemeIndex = 0;
-	config.themes.some((theme: any, i: number) => {
-		if (currentTheme === theme.theme) {
-			currentThemeIndex = i;
-			return true;
-		}
+    config.themes.some((theme: any, i: number) => {
+        if (currentTheme && currentTheme.variant) {
+            if (currentTheme.theme === theme.theme.theme) {
+                currentThemeIndex = i;
+                return true;
+            }
+        } else {
+            if (currentTheme === theme.theme) {
+                currentThemeIndex = i;
+                return true;
+            }
+        }
 	});
 	return (
 		<div classes="flex flex-col justify-between overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
