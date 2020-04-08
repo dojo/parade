@@ -60,7 +60,7 @@ export const ActiveLink = factory(function ActiveLink({
 			});
 			icache.set('handle', handle, false);
 		}
-		const context = router.getOutlet(to);
+		const context = router.getRoute(to);
 		const isActive = context && paramsEqual(matchParams, context.params);
 
 		classes = Array.isArray(classes) ? classes : [classes];

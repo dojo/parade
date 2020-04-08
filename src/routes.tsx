@@ -1,28 +1,34 @@
 export default [
 	{
+		id: 'landing',
+		outlet: 'main',
 		path: '/',
-		outlet: 'landing',
 		defaultRoute: true
 	},
 	{
+		id: 'widget',
+		outlet: 'side-menu',
 		path: 'widget/{widget}',
-		outlet: 'widget',
 		children: [
 			{
-				path: 'tests',
-				outlet: 'tests'
+				id: 'tests',
+				outlet: 'main',
+				path: 'tests'
 			},
 			{
-				path: 'overview',
-				outlet: 'overview'
+				id: 'overview',
+				outlet: 'main',
+				path: 'overview'
 			},
 			{
-				path: 'example/{example}',
-				outlet: 'example'
+				id: 'example',
+				outlet: 'main',
+				path: 'example/{example}'
 			},
 			{
-				path: 'sandbox/{example}',
-				outlet: 'sandbox-example'
+				id: 'sandbox',
+				outlet: 'main',
+				path: 'sandbox/{example}'
 			}
 		]
 	}
