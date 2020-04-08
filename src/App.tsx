@@ -54,67 +54,6 @@ function getExampleFileNames(config: any): string[] {
 	return filenames;
 }
 
-const Main = create({ icache, theme }).properties<{ config: any; widgetName?: string }>()(
-	({ properties, children, middleware: { theme, icache } }) => {
-		const { config, widgetName } = properties();
-		const changeTheme = (themeName: string) => {
-			const newTheme = config.themes[themeName].theme;
-			theme.set(newTheme);
-		};
-		return (
-			<div>
-				<Header
-					config={config}
-					open={!!icache.get('open')}
-					onMenuToggle={(open) => {
-						icache.set('open', open);
-					}}
-				/>
-				<div classes="w-full max-w-screen-xl mx-auto px-6">
-					<div classes="lg:flex -mx-6">
-						<MainMenu
-							onThemeChange={changeTheme}
-							config={config}
-							showMenu={!!icache.get('open')}
-							onMenuItemClick={() => {
-								icache.set('open', false);
-							}}
-						/>
-						<div
-							classes={`${
-								icache.get('open')
-									? 'overflow-hidden max-h-screen fixed hidden'
-									: ''
-							} min-h-screen w-full lg:static lg:max-h-full lg:overflow-visible lg:w-3/4 xl:w-4/5`}
-						>
-							<div id="content">
-								<div id="app" classes="flex">
-									<div classes="pt-24 pb-16 lg:pt-28 w-full">
-										<div classes="flex">
-											<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-												{children()}
-											</div>
-											<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
-												{widgetName && (
-													<SideMenu
-														config={config}
-														widgetName={widgetName}
-														onThemeChange={changeTheme}
-													/>
-												)}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
-);
-
 const factory = create({ block, icache, theme }).properties<{ config: any }>();
 
 export default factory(function App({ properties, middleware: { block, icache, theme } }) {
@@ -133,10 +72,37 @@ export default factory(function App({ properties, middleware: { block, icache, t
 	const widgetProperties = isCodeSandbox ? {} : block(getWidgetProperties)(widgetFilenames) || {};
 	const widgetThemeClasses = isCodeSandbox ? {} : block(getTheme)(widgetFilenames) || {};
 
-	return (
+	const content = (
 		<Outlet
 			id="main"
 			matcher={(matches, detailsMap) => {
+				matches.example = detailsMap.has('example') || detailsMap.has('overview');
+				return matches;
+			}}
+		>
+			{{
+				landing: <Landing config={config} widgetReadmes={widgetReadmeContent} />,
+				example: ({ params: { widget, example } }) => (
+					<Example
+						key={`${widget}-${example || 'overview'}`}
+						widgetName={widget}
+						exampleName={example}
+						config={config}
+						widgetReadmes={widgetReadmeContent}
+						widgetProperties={widgetProperties}
+						widgetThemes={widgetThemeClasses}
+						widgetExamples={widgetExampleContent}
+					/>
+				),
+				tests: ({ params: { widget } }) => <Test widgetName={widget} />
+			}}
+		</Outlet>
+	);
+
+	return (
+		<Outlet
+			id="main"
+			matcher={(_, detailsMap) => {
 				const isSandbox = detailsMap.has('sandbox');
 				return {
 					app: !isSandbox,
@@ -176,52 +142,7 @@ export default factory(function App({ properties, middleware: { block, icache, t
 											<div classes="pt-24 pb-16 lg:pt-28 w-full">
 												<div classes="flex">
 													<div classes="markdown px-6 xl:px-12 w-full max-w-3xl mx-auto lg:ml-0 lg:mr-auto xl:mx-0 xl:w-3/4">
-														<Outlet
-															id="main"
-															matcher={(matches, detailsMap) => {
-																matches.example =
-																	detailsMap.has('example') ||
-																	detailsMap.has('overview');
-																return matches;
-															}}
-														>
-															{{
-																landing: (
-																	<Landing
-																		config={config}
-																		widgetReadmes={
-																			widgetReadmeContent
-																		}
-																	/>
-																),
-																example: ({
-																	params: { widget, example }
-																}) => (
-																	<Example
-																		key={`${widget}-${example ||
-																			'overview'}`}
-																		widgetName={widget}
-																		exampleName={example}
-																		config={config}
-																		widgetReadmes={
-																			widgetReadmeContent
-																		}
-																		widgetProperties={
-																			widgetProperties
-																		}
-																		widgetThemes={
-																			widgetThemeClasses
-																		}
-																		widgetExamples={
-																			widgetExampleContent
-																		}
-																	/>
-																),
-																tests: ({ params: { widget } }) => (
-																	<Test widgetName={widget} />
-																)
-															}}
-														</Outlet>
+														{content}
 													</div>
 													<div classes="hidden xl:text-sm xl:block xl:w-1/4 xl:px-6">
 														<Outlet id="side-menu">
