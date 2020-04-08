@@ -1,11 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ActiveLink from './ActiveLink';
 import SideMenu from './SideMenu';
+import Outlet from '@dojo/framework/routing/Outlet';
 
 const factory = create().properties<{
 	config: any;
 	showMenu: boolean;
-	widgetName?: string;
 	onThemeChange: (themeName: string) => void;
 	onMenuItemClick: () => void;
 }>();
@@ -18,7 +18,7 @@ function formatWidgetName(widget: string) {
 }
 
 export default factory(function MainMenu({ properties }) {
-	const { config, showMenu, onMenuItemClick, widgetName, onThemeChange } = properties();
+	const { config, showMenu, onMenuItemClick, onThemeChange } = properties();
 
 	const widgets = Object.keys(config.widgets).sort();
 	return (
@@ -55,13 +55,15 @@ export default factory(function MainMenu({ properties }) {
 						})}
 						<div classes="xl:hidden block w-2/3">
 							<hr classes="hr mt-10 my-1 border-b-2 border-gray-200" />
-							{widgetName && (
-								<SideMenu
-									onThemeChange={onThemeChange}
-									config={config}
-									widgetName={widgetName}
-								/>
-							)}
+							<Outlet id="side-menu">
+								{({ params: { widget } }) => (
+									<SideMenu
+										config={config}
+										widgetName={widget}
+										onThemeChange={onThemeChange}
+									/>
+								)}
+							</Outlet>
 						</div>
 					</div>
 				</nav>
