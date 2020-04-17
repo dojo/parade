@@ -11,6 +11,14 @@ A library to show off your widget library.
 
 ![screenshot](/screenshot.png?raw=true "screenshot")
 
+## Compatibility
+
+Each major release of Dojo Parade is compatible with a specific major version of the rest of the Dojo framework:
+
+| Parade Version | Dojo Version |
+| :------------: | :-----------:|
+| `1.*.*`        | `7.*.*`      |
+
 ## Usage
 
 ```bash
