@@ -13,7 +13,7 @@
     "release": "npm run package && dojo-release"
   },
   "peerDependencies": {
-    "@dojo/framework": "next",
+    "@dojo/framework": "7.0.0-beta.1",
     "@dojo/themes": "^6.0.0"
   },
   "dependencies": {
@@ -31,9 +31,9 @@
     "unified": "8.4.1"
   },
   "devDependencies": {
-    "@dojo/cli": "7.0.0-alpha.1",
-    "@dojo/cli-build-app": "next",
-    "@dojo/cli-build-widget": "next",
+    "@dojo/cli": "7.0.0-beta.1",
+    "@dojo/cli-build-app": "7.0.0-beta.1",
+    "@dojo/cli-build-widget": "7.0.0-beta.1",
     "@dojo/framework": "next",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^6.0.0",
