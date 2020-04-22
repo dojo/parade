@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 import resize from '@dojo/framework/core/middleware/resize';
+import * as css from './ExampleSandbox.m.css';
 
 const factory = create({ theme, resize }).properties<{
 	themeName: string;
@@ -32,7 +33,7 @@ export default factory(function Example({ properties, middleware: { theme, resiz
 				(e: any) => e.filename.toLowerCase() === exampleName
 		  );
 	return (
-		<div key="example-container">
+		<div key="example-container" classes={css.container}>
 			<example.module />
 		</div>
 	);
