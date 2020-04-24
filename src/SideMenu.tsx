@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
+import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
 import ActiveLink from './ActiveLink';
 
@@ -15,7 +16,7 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const currentTheme = theme.get();
 	let currentThemeIndex = 0;
 	config.themes.some((theme: any, i: number) => {
-		if (currentTheme && currentTheme.variant) {
+		if (isThemeInjectorPayloadWithVariant(currentTheme)) {
 			if (currentTheme.theme === theme.theme.theme) {
 				currentThemeIndex = i;
 				return true;

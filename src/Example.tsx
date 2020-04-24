@@ -2,6 +2,7 @@ import { create, tsx, destroy } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 import icache from '@dojo/framework/core/middleware/icache';
 import global from '@dojo/framework/shim/global';
+import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
@@ -48,7 +49,7 @@ export default factory(function Example({
 	const currentTheme = theme.get();
 	let themeName = config.themes[0].label;
 	config.themes.forEach((theme: any, i: number) => {
-		if (currentTheme && currentTheme.variant) {
+		if (isThemeInjectorPayloadWithVariant(currentTheme)) {
 			if (currentTheme.theme === theme.theme.theme) {
 				themeName = theme.label;
 			}
