@@ -31,13 +31,11 @@
     "unified": "8.4.1"
   },
   "devDependencies": {
-    "@dojo/cli": "7.0.0-beta.1",
-    "@dojo/cli-build-app": "7.0.0-beta.1",
-    "@dojo/cli-build-widget": "7.0.0-beta.1",
-    "@dojo/framework": "next",
+    "@dojo/cli": "7.0.0-rc.1",
+    "@dojo/cli-build-app": "7.0.0-rc.1",
+    "@dojo/cli-build-widget": "7.0.0-rc.1",
+    "@dojo/framework": "7.0.0-rc.1",
     "@dojo/scripts": "^4.0.2",
-    "@dojo/themes": "^6.0.0",
-    "@dojo/widgets": "next",
     "@types/node": "~9.6.5",
     "intern": "^4.6.0",
     "prettier": "^1.19.1",
