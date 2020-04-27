@@ -50,10 +50,10 @@ export default factory(function Example({
 	let themeName = config.themes[0].label;
 	config.themes.forEach((theme: any, i: number) => {
 		if (isThemeInjectorPayloadWithVariant(currentTheme)) {
-			if (currentTheme.theme === theme.theme.theme) {
+			if (currentTheme.theme.theme === theme.theme.theme) {
 				themeName = theme.label;
 			}
-		} else if (currentTheme === theme.theme) {
+		} else if (currentTheme && currentTheme.theme === theme.theme) {
 			themeName = theme.label;
 		}
 	});

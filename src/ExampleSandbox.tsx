@@ -13,12 +13,13 @@ const factory = create({ theme, resize }).properties<{
 export default factory(function Example({ properties, middleware: { theme, resize } }) {
 	const { themeName, config, widgetName, exampleName } = properties();
 	let newTheme = config.themes[0].theme;
+	const currentTheme = theme.get();
 	config.themes.forEach((theme: any, i: number) => {
 		if (theme.label === themeName) {
 			newTheme = config.themes[i].theme;
 		}
 	});
-	if (theme.get() !== newTheme) {
+	if (currentTheme && currentTheme.theme !== newTheme) {
 		theme.set(newTheme);
 	}
 	const { height } = resize.get('example-container') || { height: 0 };
