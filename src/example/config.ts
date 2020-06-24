@@ -7,6 +7,7 @@ import NamedClassButtonExample from './NamedClassButtonExample';
 
 import red from './theme/red';
 import blue from './theme/blue';
+import InheritingButtonExample from './InheritingButtonExample';
 
 export default {
 	name: '@dojo/widgets',
@@ -75,6 +76,15 @@ export default {
 				example: {
 					filename: 'NamedClassButtonExample',
 					module: NamedClassButtonExample
+				}
+			}
+		},
+		InheritingButton: {
+			filename: 'InheritingButton',
+			overview: {
+				example: {
+					filename: 'InheritingButtonExample',
+					module: InheritingButtonExample
 				}
 			}
 		}

@@ -9,7 +9,9 @@ import {
 	ExportAssignment,
 	CallExpression,
 	ObjectFlags,
-	ClassDeclaration, PropertyAssignment
+	ClassDeclaration,
+	PropertyAssignment,
+	TypeFormatFlags
 } from 'ts-morph';
 
 function getInterfaceName(value: string, type = 'Properties') {
@@ -53,7 +55,7 @@ function getPropertyDetails(propsType: Type): PropertyInterface[] {
 		.map(format);
 }
 
-function getPropertiesOfFactory(factory: CallExpression) {
+function getTypeFromFactory(factory: CallExpression, children = false) {
 	const factoryIdentifier = factory.getChildAtIndex(0);
 	const symbol = factoryIdentifier.getSymbol();
 	if (symbol) {
@@ -68,7 +70,7 @@ function getPropertiesOfFactory(factory: CallExpression) {
 					const typeArguments = callback.getTypeArguments();
 
 					if (typeArguments) {
-						return typeArguments[0];
+						return children ? typeArguments[1] : typeArguments[0];
 					}
 				}
 			}
@@ -114,6 +116,7 @@ export default function(config: { [index: string]: string }) {
 		[index: string]: PropertyInterface[];
 	} => {
 		let propsType: Type | undefined = undefined;
+		let childrenType: Type | undefined = undefined;
 		let messages: PropertyInterface[] = [];
 		let locales: PropertyInterface[] = [];
 
@@ -133,8 +136,8 @@ export default function(config: { [index: string]: string }) {
 			return props;
 		}
 
+		let initializer: any;
 		sourceFile.forEachDescendant((node) => {
-			let initializer: any;
 			const nodeSymbol = node.getSymbol();
 
 			if (node.getKind() === SyntaxKind.VariableDeclaration && nodeSymbol) {
@@ -161,9 +164,14 @@ export default function(config: { [index: string]: string }) {
 
 						if (typeArguments.length) {
 							const widgetSymbol = typeArguments[0].getChildAtIndex(0).getSymbol();
+							const widgetChildrenSymbol = typeArguments[1] && typeArguments[1].getChildAtIndex(0).getSymbol();
 
 							if (widgetSymbol) {
 								propsType = widgetSymbol.getDeclaredType();
+							}
+
+							if (widgetChildrenSymbol) {
+								childrenType = widgetChildrenSymbol.getDeclaredType();
 							}
 						}
 					}
@@ -182,7 +190,8 @@ export default function(config: { [index: string]: string }) {
 			}
 
 			if (initializer && initializer.getKind() === SyntaxKind.CallExpression) {
-				propsType = getPropertiesOfFactory(initializer);
+				propsType = getTypeFromFactory(initializer);
+				childrenType  = getTypeFromFactory(initializer, true);
 			}
 		});
 
@@ -202,26 +211,68 @@ export default function(config: { [index: string]: string }) {
 			propsType = propsInterface.getType();
 		}
 
+		if (!childrenType) {
+			const childrenInterfaceTypeName = getInterfaceName(widgetName, 'Children');
+			const childrenInterface =
+				sourceFile.getInterface(childrenInterfaceTypeName) ||
+				sourceFile.getTypeAlias(childrenInterfaceTypeName);
+			if (childrenInterface) {
+				childrenType = childrenInterface.getType();
+			}
+		}
+
 		let properties = getPropertyDetails(propsType);
+		const children: PropertyInterface[] = [];
 		const unionTypes = propsType.getUnionTypes();
-		if (unionTypes && unionTypes.length) {
-			unionTypes.forEach((unionType) => {
-				const unionProperties = getPropertyDetails(unionType);
-				unionProperties.forEach((unionProperty) => {
-					const property = properties.find((prop) => prop.name === unionProperty.name);
-					if (property) {
-						const types = unionProperty.type.split('|');
-						types.forEach((type) => {
-							if (property.type.indexOf(type) === -1) {
-								property.type = `${type} | ${property.type}`;
-							}
-						});
-					} else {
-					properties.push(unionProperty);
+
+		const childUnionTypes = childrenType ? childrenType.getUnionTypes() : [];
+		if (childrenType && !childUnionTypes.length) {
+			childUnionTypes.push(childrenType);
+		}
+
+		function parseUnionType(unionProperty: PropertyInterface, props: any[]) {
+			const property = props.find((prop) => prop.name === unionProperty.name);
+			if (property) {
+				const types = unionProperty.type.split('|');
+				types.forEach((type) => {
+					if (property.type.indexOf(type) === -1) {
+						property.type = `${type} | ${property.type}`;
 					}
 				});
+			} else {
+				props.push(unionProperty);
+			}
+		}
+
+		if (unionTypes && unionTypes.length) {
+			unionTypes.forEach((unionType) => {
+				const unionProperties = getWidgetProperties(unionType);
+				unionProperties.forEach(type => parseUnionType(type, properties));
 			});
 		}
+		childUnionTypes.forEach((unionType) => {
+			const text = unionType.getText(undefined, TypeFormatFlags.None);
+			if (unionType.isArray() || !unionType.isObject() || (
+				text && (text.startsWith('WNode') || text.startsWith('VNode') || text.startsWith('DNode'))
+			)) {
+				children.push({
+					name: '----',
+					type: text,
+					optional: false
+				});
+			} else {
+				const callSignatures = unionType.getCallSignatures();
+				callSignatures.forEach(signature => {
+					children.push({
+						name: '----',
+						type: signature.getDeclaration().getFullText(),
+						optional: false
+					});
+				});
+				const unionProperties = getWidgetProperties(unionType);
+				unionProperties.forEach(type => parseUnionType(type, children));
+			}
+		});
 
 		function compareProperties(a: PropertyInterface, b: PropertyInterface) {
 			if (a.optional && !b.optional) {
@@ -241,12 +292,8 @@ export default function(config: { [index: string]: string }) {
 		properties.sort(compareProperties);
 		messages.sort(compareProperties);
 		locales.sort(compareProperties);
+		children.sort(compareProperties);
 
-		const childrenInterfaceTypeName = getInterfaceName(widgetName, 'Children');
-		const childrenInterface =
-			sourceFile.getInterface(childrenInterfaceTypeName) ||
-			sourceFile.getTypeAlias(childrenInterfaceTypeName);
-		let children = childrenInterface && getPropertyDetails(childrenInterface.getType());
 		return { ...props, [widgetName]: { properties, children, messages, locales } };
 	}, {});
 }
