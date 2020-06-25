@@ -1,6 +1,7 @@
 {
 	"extends": "./src/parade.json",
 	"build-app": {
+		"singleBundle": true,
 		"externals": {
 			"outputPath": ".",
 			"dependencies": [

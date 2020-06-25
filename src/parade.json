@@ -1,5 +1,6 @@
 {
 	"build-app": {
+		"singleBundle": true,
 		"experimental": {
 			"speed": true
 		},
