@@ -70,7 +70,7 @@ export default factory(function Example({
 
 	const widgetReadme = widgetReadmes[readmePath];
 	const widgetExample = widgetExamples[examplePath];
-	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName];
+	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName] || {} as any;
 	const widgetTheme = widgetThemes[widgetName];
 
 	const dimensions = postMessage();
@@ -118,7 +118,7 @@ export default factory(function Example({
 					</a>
 				</div>
 			)}
-			{isOverview && <InterfaceTable props={widgetProperty} />}
+			{isOverview && widgetProperty && <InterfaceTable props={widgetProperty} />}
 			{isOverview && widgetChildren && (
 				<InterfaceTable props={widgetChildren} tableName="Children" />
 			)}
