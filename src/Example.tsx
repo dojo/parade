@@ -70,7 +70,7 @@ export default factory(function Example({
 
 	const widgetReadme = widgetReadmes[readmePath];
 	const widgetExample = widgetExamples[examplePath];
-	const { properties: widgetProperty, children: widgetChildren } = widgetProperties[widgetName];
+	const { properties: widgetProperty, children: widgetChildren, messages, locales } = widgetProperties[widgetName];
 	const widgetTheme = widgetThemes[widgetName];
 
 	const dimensions = postMessage();
@@ -122,6 +122,8 @@ export default factory(function Example({
 			{isOverview && widgetChildren && (
 				<InterfaceTable props={widgetChildren} tableName="Children" />
 			)}
+			{isOverview && messages.length && <InterfaceTable props={messages} tableName="i18n Messages" descriptionLabel="Default" showTypes={false}/>}
+			{isOverview && locales.length && <InterfaceTable props={locales} tableName="Supported Locales" showComments={false} showTypes={false}/>}
 			{isOverview && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);

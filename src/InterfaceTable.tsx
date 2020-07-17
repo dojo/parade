@@ -6,12 +6,21 @@ import { PropertyInterface } from './interfaces.block';
 interface InterfaceTableProperties {
 	props?: PropertyInterface[];
 	tableName?: string;
+	descriptionLabel?: string;
+	showTypes?: boolean;
+	showComments?: boolean;
 }
 
 const factory = create().properties<InterfaceTableProperties>();
 
 export default factory(function InterfaceTable({ properties }) {
-	const { props, tableName = 'Properties' } = properties();
+	const {
+		props,
+		tableName = 'Properties',
+		descriptionLabel = 'Description',
+		showTypes = true,
+		showComments = true
+	} = properties();
 	if (!props) {
 		return null;
 	}
@@ -26,12 +35,16 @@ export default factory(function InterfaceTable({ properties }) {
 							<th classes="px-4 py-2 border-r border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100 rounded-tl-lg">
 								Name
 							</th>
+							{showTypes &&
 							<th classes="px-4 py-2 border-r border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100">
 								Type
 							</th>
-							<th classes="px-4 py-2 border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100 rounded-tr-lg">
-								Description
-							</th>
+							}
+							{showComments &&
+								<th classes="px-4 py-2 border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100 rounded-tr-lg">
+									{descriptionLabel}
+								</th>
+							}
 						</tr>
 					</thead>
 					<tbody>
@@ -41,8 +54,8 @@ export default factory(function InterfaceTable({ properties }) {
 									<td classes="px-4 py-2 text-sm">{`${prop.name}${
 										prop.optional ? '?' : ''
 									}`}</td>
-									<td classes="px-4 py-2 text-sm">{prop.type}</td>
-									<td classes="px-4 py-2 text-sm">{prop.description}</td>
+									{showTypes && <td classes="px-4 py-2 text-sm">{prop.type}</td>}
+									{showComments && <td classes="px-4 py-2 text-sm">{prop.description}</td>}
 								</tr>
 							);
 						})}
