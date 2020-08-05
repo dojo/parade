@@ -9,7 +9,7 @@ import {
 	ExportAssignment,
 	CallExpression,
 	ObjectFlags,
-	ClassDeclaration
+	ClassDeclaration, PropertyAssignment
 } from 'ts-morph';
 
 function getInterfaceName(value: string, type = 'Properties') {
@@ -24,26 +24,32 @@ export interface PropertyInterface {
 	type: string;
 	optional: boolean;
 	description?: string;
+	initializer?: string;
 }
 
-function format(prop: MethodSignature | PropertySignature): PropertyInterface {
+function format(prop: MethodSignature | PropertySignature | PropertyAssignment): PropertyInterface {
 	return {
 		name: prop.getName(),
 		type: prop.getType().getText(prop),
 		optional: prop.hasQuestionToken() || false,
-		description: prop.getJsDocs()[0] && prop.getJsDocs()[0].getComment()
+		description: (prop as PropertySignature).getJsDocs ? (
+			(prop as PropertySignature).getJsDocs()[0] && (prop as PropertySignature).getJsDocs()[0].getComment()
+		) : (
+			(prop as PropertyAssignment).getInitializerIfKind(SyntaxKind.StringLiteral) &&
+			(prop as PropertyAssignment).getInitializerIfKind(SyntaxKind.StringLiteral)!.getLiteralValue()
+		)
 	};
 }
 
-function isSignature(node: any): node is MethodSignature | PropertySignature {
-	return Boolean(node && node.getName && node.getType && node.hasQuestionToken && node.getJsDocs);
+function isSignatureOrAssignment(node: any): node is MethodSignature | PropertySignature | PropertyAssignment {
+	return Boolean(node && node.getName && node.getType && node.hasQuestionToken);
 }
 
-function getWidgetProperties(propsType: Type): PropertyInterface[] {
+function getPropertyDetails(propsType: Type): PropertyInterface[] {
 	return propsType
 		.getProperties()
 		.map((symbol) => symbol.getDeclarations()[0])
-		.filter(isSignature)
+		.filter(isSignatureOrAssignment)
 		.map(format);
 }
 
@@ -68,8 +74,35 @@ function getPropertiesOfFactory(factory: CallExpression) {
 			}
 		}
 	}
+}
 
-	return undefined;
+function parseI18n(node: CallExpression) {
+	const propertyAccess = node.getChildAtIndex(0);
+	const functionSymbol = propertyAccess &&
+		propertyAccess.getKind() === SyntaxKind.PropertyAccessExpression &&
+		propertyAccess.getSymbol();
+	const functionType = functionSymbol && functionSymbol.getTypeAtLocation(node);
+	const callType = functionType && functionType.getCallSignatures()[0];
+	const argument = callType && callType.getParameters()[0]
+	const parameterType = argument && argument.getTypeAtLocation(node);
+	const parameterSymbol = parameterType && parameterType.getSymbol();
+	const parameterSymbolName = parameterSymbol && parameterSymbol.getName();
+	const returnType = callType && callType.getReturnType();
+	const returnAliasSymbol = returnType && returnType.getAliasSymbol();
+	const returnAliasName = returnAliasSymbol && returnAliasSymbol.getName();
+	if (parameterType && parameterSymbolName === 'Bundle' && returnAliasName === 'LocalizedMessages') {
+		const argument = node.getArguments()[0]
+		const argumentType = argument && argument.getType();
+		const messages = argumentType && argumentType.getProperty('messages');
+		const locales = argumentType && argumentType.getProperty('locales');
+		const messageProps = messages && messages.getTypeAtLocation(node);
+		const localeProps = locales && locales.getTypeAtLocation(node);
+		return {
+			messages: messageProps && getPropertyDetails(messageProps), locales: localeProps && getPropertyDetails(localeProps)
+		};
+	}
+
+	return { messages: undefined, locales: undefined };
 }
 
 export default function(config: { [index: string]: string }) {
@@ -81,6 +114,8 @@ export default function(config: { [index: string]: string }) {
 		[index: string]: PropertyInterface[];
 	} => {
 		let propsType: Type | undefined = undefined;
+		let messages: PropertyInterface[] = [];
+		let locales: PropertyInterface[] = [];
 
 		const filename = config[widgetName];
 		const sourceFile = project.getSourceFile(filename);
@@ -135,6 +170,15 @@ export default function(config: { [index: string]: string }) {
 				}
 			} else if (node.getKind() === SyntaxKind.ExportAssignment) {
 				initializer = (node as ExportAssignment).getExpression();
+			} else if (node.getKind() === SyntaxKind.CallExpression) {
+				const parsedI18n = parseI18n(node as CallExpression)
+				if (parsedI18n.messages) {
+					messages.push(...parsedI18n.messages);
+				}
+
+				if(parsedI18n.locales) {
+					locales = parsedI18n.locales;
+				}
 			}
 
 			if (initializer && initializer.getKind() === SyntaxKind.CallExpression) {
@@ -158,11 +202,11 @@ export default function(config: { [index: string]: string }) {
 			propsType = propsInterface.getType();
 		}
 
-		let properties = getWidgetProperties(propsType);
+		let properties = getPropertyDetails(propsType);
 		const unionTypes = propsType.getUnionTypes();
 		if (unionTypes && unionTypes.length) {
 			unionTypes.forEach((unionType) => {
-				const unionProperties = getWidgetProperties(unionType);
+				const unionProperties = getPropertyDetails(unionType);
 				unionProperties.forEach((unionProperty) => {
 					const property = properties.find((prop) => prop.name === unionProperty.name);
 					if (property) {
@@ -173,12 +217,13 @@ export default function(config: { [index: string]: string }) {
 							}
 						});
 					} else {
-						properties.push(unionProperty);
+					properties.push(unionProperty);
 					}
 				});
 			});
 		}
-		properties.sort((a, b) => {
+
+		function compareProperties(a: PropertyInterface, b: PropertyInterface) {
 			if (a.optional && !b.optional) {
 				return 1;
 			}
@@ -192,13 +237,16 @@ export default function(config: { [index: string]: string }) {
 				return 1;
 			}
 			return 0;
-		});
+		}
+		properties.sort(compareProperties);
+		messages.sort(compareProperties);
+		locales.sort(compareProperties);
 
 		const childrenInterfaceTypeName = getInterfaceName(widgetName, 'Children');
 		const childrenInterface =
 			sourceFile.getInterface(childrenInterfaceTypeName) ||
 			sourceFile.getTypeAlias(childrenInterfaceTypeName);
-		let children = childrenInterface && getWidgetProperties(childrenInterface.getType());
-		return { ...props, [widgetName]: { properties, children } };
+		let children = childrenInterface && getPropertyDetails(childrenInterface.getType());
+		return { ...props, [widgetName]: { properties, children, messages, locales } };
 	}, {});
 }
