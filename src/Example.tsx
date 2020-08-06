@@ -119,7 +119,7 @@ export default factory(function Example({
 				</div>
 			)}
 			{isOverview && widgetProperty && <InterfaceTable props={widgetProperty} />}
-			{isOverview && widgetChildren && (
+			{isOverview && widgetChildren && widgetChildren.length && (
 				<InterfaceTable props={widgetChildren} tableName="Children" />
 			)}
 			{isOverview && messages.length && <InterfaceTable props={messages} tableName="i18n Messages" descriptionLabel="Default" showTypes={false}/>}

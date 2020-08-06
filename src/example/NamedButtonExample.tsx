@@ -4,5 +4,5 @@ import Button from './NamedButton/NamedButton';
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button label="Hello" />;
+	return <Button>Hello</Button>;
 });
