@@ -246,7 +246,7 @@ export default function(config: { [index: string]: string }) {
 
 		if (unionTypes && unionTypes.length) {
 			unionTypes.forEach((unionType) => {
-				const unionProperties = getWidgetProperties(unionType);
+				const unionProperties = getPropertyDetails(unionType);
 				unionProperties.forEach(type => parseUnionType(type, properties));
 			});
 		}
@@ -269,7 +269,7 @@ export default function(config: { [index: string]: string }) {
 						optional: false
 					});
 				});
-				const unionProperties = getWidgetProperties(unionType);
+				const unionProperties = getPropertyDetails(unionType);
 				unionProperties.forEach(type => parseUnionType(type, children));
 			}
 		});
