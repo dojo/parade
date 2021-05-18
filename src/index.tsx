@@ -10,6 +10,7 @@ import './main.css';
 
 import routes from './routes';
 import App from './App';
+import { getThemeFromConfig } from './utils';
 
 export interface ConfigThemes {
 	label: string;
@@ -57,8 +58,8 @@ export default ({ config }: { config: Config }) => {
 			}
 		});
 	} else {
+		const theme = getThemeFromConfig(config);
 		const registry = new Registry();
-		const [theme] = themes;
 		registerThemeInjector(theme.theme, registry);
 		registerRouterInjector(routes, registry);
 

@@ -63,7 +63,8 @@ export default factory(function App({ properties, middleware: { block, icache, t
 	const readmeFilenames = getReadmeFileNames(config);
 	const isCodeSandbox = !!global.window.csbJsonP;
 	const changeTheme = (themeName: string) => {
-		const newTheme = config.themes[themeName].theme;
+		const { theme: newTheme, label } = config.themes[themeName];
+		window.location.search = `theme=${label}`;
 		theme.set(newTheme);
 	};
 

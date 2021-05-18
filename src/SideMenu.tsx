@@ -1,31 +1,20 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
-import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
 import ActiveLink from './ActiveLink';
+import { Config } from '.';
+import { getThemeFromConfig } from './utils';
 
 const factory = create({ theme }).properties<{
 	widgetName: string;
-	config: any;
+	config: Config;
 	onThemeChange: (theme: string) => void;
 }>();
 
 export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const { widgetName, config, onThemeChange } = properties();
+	const currentTheme = getThemeFromConfig(config);
 
-	const currentTheme = theme.get();
-	let currentThemeIndex = 0;
-	config.themes.some((theme: any, i: number) => {
-		if (isThemeInjectorPayloadWithVariant(currentTheme)) {
-			if (currentTheme.theme === theme.theme.theme) {
-				currentThemeIndex = i;
-				return true;
-			}
-		} else if (currentTheme === theme.theme) {
-			currentThemeIndex = i;
-			return true;
-		}
-	});
 	return (
 		<div classes="flex flex-col justify-between overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
 			<div classes="mb-8">
@@ -96,7 +85,10 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 							>
 								{config.themes.map((theme: any, i: number) => {
 									return (
-										<option selected={i === currentThemeIndex} value={`${i}`}>
+										<option
+											selected={theme.label === currentTheme.label}
+											value={`${i}`}
+										>
 											{theme.label}
 										</option>
 									);
