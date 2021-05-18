@@ -70,8 +70,10 @@ export default factory(function Example({
 
 	const widgetReadme = widgetReadmes[readmePath];
 	const widgetExample = widgetExamples[examplePath];
-	const { properties: widgetProperty, children: widgetChildren, messages, locales } = widgetProperties[widgetName] || {} as any;
+	const { properties: widgetProperty, children: widgetChildren, messages, locales } =
+		widgetProperties[widgetName] || ({} as any);
 	const widgetTheme = widgetThemes[widgetName];
+	const hasThemeKeys = Object.keys(widgetTheme).length > 0;
 
 	const dimensions = postMessage();
 
@@ -122,9 +124,23 @@ export default factory(function Example({
 			{isOverview && widgetChildren && widgetChildren.length && (
 				<InterfaceTable props={widgetChildren} tableName="Children" />
 			)}
-			{isOverview && messages.length && <InterfaceTable props={messages} tableName="i18n Messages" descriptionLabel="Default" showTypes={false}/>}
-			{isOverview && locales.length && <InterfaceTable props={locales} tableName="Supported Locales" showComments={false} showTypes={false}/>}
-			{isOverview && <ThemeTable themes={widgetTheme} />}
+			{isOverview && messages.length && (
+				<InterfaceTable
+					props={messages}
+					tableName="i18n Messages"
+					descriptionLabel="Default"
+					showTypes={false}
+				/>
+			)}
+			{isOverview && locales.length && (
+				<InterfaceTable
+					props={locales}
+					tableName="Supported Locales"
+					showComments={false}
+					showTypes={false}
+				/>
+			)}
+			{isOverview && hasThemeKeys && <ThemeTable themes={widgetTheme} />}
 		</div>
 	);
 });
