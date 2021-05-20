@@ -85,31 +85,68 @@ export default factory(function Example({
 		dimensions.height = '600px';
 	}
 
+	const isFullscreen = icache.get('isFullscreen');
+	const isCodeShowing = icache.getOrSet('isCodeShowing', true);
+
 	return (
 		<div>
 			{isOverview && <div innerHTML={widgetReadme} />}
 			{isOverview && <HorizontalRule />}
 			<h2 classes="text-2xl h mb-4">{example.title || 'Example'}</h2>
-			<div classes="bg-white rounded-t-lg overflow-hidden border-b-0 border-t border-l border-r border-gray-400 p-4">
-				{example.sandbox ? (
-					<iframe
-						src={`?cacheBust=${widgetName}-${
-							example.filename
-						}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
-						classes="w-full iframe"
-						styles={dimensions}
-					/>
-				) : (
-					<div key="example-container" styles={example.size ? dimensions : {}}>
-						<example.module />
-					</div>
-				)}
+			<div
+				classes={`bg-white overflow-hidden border-t border-l border-r border-gray-400 ${
+					!isCodeShowing ? 'border-b' : 'border-b-0'
+				} ${isFullscreen ? 'fixed top-0 left-0 w-screen h-screen z-50' : 'rounded-t-lg'}`}
+			>
+				<div
+					classes={`border border-gray-400 border-t-0 border-l-0 border-r-0 flex justify-end ${
+						isFullscreen ? 'p-6' : 'px-4 py-2'
+					}`}
+				>
+					<button
+						classes={`border-0 appearance-none bg-transparent cursor-pointer p-0 ${
+							isFullscreen ? 'text-black mr-6' : 'text-gray-500 mr-4'
+						}`}
+						onclick={() => icache.set('isFullscreen', !isFullscreen)}
+					>
+						{isFullscreen ? (
+							<i class="fas fa-compress-alt"></i>
+						) : (
+							<i class="fas fa-expand-alt"></i>
+						)}
+					</button>
+					<button
+						classes={`border-0 appearance-none bg-transparent cursor-pointer p-0 ${
+							isCodeShowing ? 'text-black' : 'text-gray-500'
+						}`}
+						onclick={() => icache.set('isCodeShowing', !isCodeShowing)}
+					>
+						<i class="fas fa-code"></i>
+					</button>
+				</div>
+				<div classes="p-4">
+					{example.sandbox ? (
+						<iframe
+							src={`?cacheBust=${widgetName}-${
+								example.filename
+							}-${themeName}#widget/${widgetName}/sandbox/${example.filename.toLowerCase()}?theme=${themeName}`}
+							classes="w-full iframe"
+							styles={dimensions}
+						/>
+					) : (
+						<div key="example-container" styles={example.size ? dimensions : {}}>
+							<example.module />
+						</div>
+					)}
+				</div>
 			</div>
-			<div classes="rounded-b-lg bg-gray-800">
-				<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
-					<code classes="language-ts" innerHTML={widgetExample} />
-				</pre>
-			</div>
+			{isCodeShowing && (
+				<div classes="rounded-b-lg bg-gray-800">
+					<pre classes="bg-blue-900 language-ts rounded px-4 py-4">
+						<code classes="language-ts" innerHTML={widgetExample} />
+					</pre>
+				</div>
+			)}
 			{codesandboxPath && (
 				<div classes="my-4">
 					<a href={codesandboxPath}>
