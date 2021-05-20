@@ -16,6 +16,7 @@
     "@dojo/framework": "~7.0.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "5.15.3",
     "canonical-path": "1.0.0",
     "cldr-data": "36.0.0",
     "postcss": "7.0.21",

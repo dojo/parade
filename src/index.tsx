@@ -61,7 +61,12 @@ export default ({ config }: { config: Config }) => {
 		const theme = getThemeFromConfig(config);
 		const registry = new Registry();
 		registerThemeInjector(theme.theme, registry);
-		registerRouterInjector(routes, registry);
+		registerRouterInjector(routes, registry, {
+			setDocumentTitle: ({ params, title }) => {
+				const section = params.widget || title;
+				return `Parade${section ? ` - ${section}` : ''}`;
+			}
+		});
 
 		const r = renderer(() => <App config={config} />);
 		r.mount({ registry, domNode: document.getElementById('app')!, transition });

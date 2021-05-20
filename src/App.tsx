@@ -18,6 +18,8 @@ import getWidgetProperties from './interfaces.block';
 import getTheme from './theme.block';
 import code from './code.block';
 
+import '@fortawesome/fontawesome-free/css/all.css';
+
 function getWidgetFileNames(config: any): { [index: string]: string } {
 	return Object.keys(config.widgets).reduce((newConfig, widget) => {
 		return {

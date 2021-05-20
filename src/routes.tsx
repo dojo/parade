@@ -3,7 +3,8 @@ export default [
 		id: 'landing',
 		outlet: 'main',
 		path: '/',
-		defaultRoute: true
+		defaultRoute: true,
+		title: 'Home'
 	},
 	{
 		id: 'widget',
