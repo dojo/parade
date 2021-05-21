@@ -88,6 +88,12 @@ export default factory(function Example({
 	const isFullscreen = icache.get('isFullscreen');
 	const isCodeShowing = icache.getOrSet('isCodeShowing', true);
 
+	let description;
+	if (example.description) {
+		description =
+			typeof example.description === 'string' ? example.description : <example.description />;
+	}
+
 	return (
 		<div>
 			{isOverview && <div innerHTML={widgetReadme} />}
@@ -156,6 +162,13 @@ export default factory(function Example({
 						/>
 					</a>
 				</div>
+			)}
+			{description && (
+				<virtual>
+					<HorizontalRule />
+					<h2 classes="text-2xl mb-4">Description</h2>
+					{description}
+				</virtual>
 			)}
 			{isOverview && widgetProperty && <InterfaceTable props={widgetProperty} />}
 			{isOverview && widgetChildren && widgetChildren.length && (
