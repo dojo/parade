@@ -8,6 +8,11 @@ import NamedClassButtonExample from './NamedClassButtonExample';
 import red from './theme/red';
 import blue from './theme/blue';
 import InheritingButtonExample from './InheritingButtonExample';
+import { create } from '@dojo/framework/core/vdom';
+
+const ExampleDescription = create()(
+	() => 'This is an example of an optional description that is a widget.'
+);
 
 export default {
 	name: '@dojo/widgets',
@@ -30,7 +35,8 @@ export default {
 			overview: {
 				example: {
 					filename: 'ButtonExample',
-					module: ButtonExample
+					module: ButtonExample,
+					description: 'This is an example of an optional description that is a string.'
 				}
 			},
 			examples: [
@@ -75,7 +81,8 @@ export default {
 			overview: {
 				example: {
 					filename: 'NamedClassButtonExample',
-					module: NamedClassButtonExample
+					module: NamedClassButtonExample,
+					description: ExampleDescription
 				}
 			}
 		},
