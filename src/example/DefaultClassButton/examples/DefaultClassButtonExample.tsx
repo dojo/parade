@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from './DefaultClassButton/DefaultClassButton';
+import Button from '../DefaultClassButton';
 
 const factory = create();
 

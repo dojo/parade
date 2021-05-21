@@ -34,6 +34,8 @@ export interface WidgetConfig {
 	examples?: WidgetExampleConfig[];
 }
 
+export type WidgetConfigMap = { [index: string]: WidgetConfig };
+
 export interface Config {
 	name: string;
 	themes: ConfigThemes[];
@@ -43,7 +45,7 @@ export interface Config {
 	widgetPath: (widget: string, filename: string) => string;
 	examplePath: (widget: string, filename: string) => string;
 	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
-	widgets: { [index: string]: WidgetConfig };
+	widgets?: WidgetConfigMap;
 }
 
 export default ({ config }: { config: Config }) => {

@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from './NamedButton/NamedButton';
+import Input from '../Input';
 
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button>Hello</Button>;
+	return <Input label="Hello" value={''} onValue={() => {}} type="labeled" />;
 });
