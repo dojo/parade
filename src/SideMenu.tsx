@@ -4,12 +4,17 @@ import theme from '@dojo/framework/core/middleware/theme';
 import ActiveLink from './ActiveLink';
 import { Config } from '.';
 import { getThemeFromConfig } from './utils';
+import { basename, extname } from 'path';
 
 const factory = create({ theme }).properties<{
 	widgetName: string;
 	config: Config;
 	onThemeChange: (theme: string) => void;
 }>();
+
+function cleanExampleName(filename: string) {
+	return basename(basename(filename, extname(filename)), '.example').toLowerCase();
+}
 
 export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const { widgetName, config, onThemeChange } = properties();
@@ -61,11 +66,11 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 											to="example"
 											params={{
 												widget: widgetName,
-												example: example.filename.toLowerCase()
+												example: cleanExampleName(example.filename)
 											}}
 											activeClasses={['font-bold']}
 										>
-											{example.filename.replace(/([A-Z])/g, ' $1').trim()}
+											{example.title.replace(/([A-Z])/g, ' $1').trim()}
 										</ActiveLink>
 									</li>
 								);

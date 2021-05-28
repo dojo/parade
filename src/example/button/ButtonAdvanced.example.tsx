@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from '../Button';
+import Button from './Button';
 
 const factory = create();
 
@@ -8,7 +8,6 @@ const example = factory(function ButtonAdvanced() {
 });
 
 export default {
-	filename: 'ButtonAdvanced',
 	group: 'Button',
 	module: example,
 	sandbox: true,

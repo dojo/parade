@@ -1,13 +1,15 @@
 import parade, { Config, WidgetConfigMap } from './index';
 import baseConfig from './example/config';
+import { basename, extname } from 'path';
 
-const getLocalConfig = (require as any).context('./', true, /\.exampleFoo\.ts(x)?$/);
+const getLocalConfig = (require as any).context('./', true, /\.example\.ts(x)?$/);
 
-const widgetConfig = getLocalConfig.keys().reduce((map: WidgetConfigMap, id: string) => {
-	const localConfig = getLocalConfig(id).default;
-	const existingConfigs = map[localConfig.group || id] || [];
-	map[localConfig.group || id] = existingConfigs.concat(getLocalConfig(id).default);
-	return map;
+const widgetConfig = getLocalConfig.keys().reduce((configMap: WidgetConfigMap, id: string) => {
+	const exampleFilename = basename(basename(id, extname(id)), '.example');
+	const exampleConfig = { filename: exampleFilename, ...getLocalConfig(id).default };
+	const existingConfigs = configMap[exampleConfig.group || id] || [];
+	configMap[exampleConfig.group || id] = existingConfigs.concat(exampleConfig);
+	return configMap;
 }, {});
 
 const config: Config = {

@@ -1,12 +1,18 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from '../InheritingButton';
+import Button from './InheritingButton';
 
 const factory = create();
 
-export default factory(function Basic() {
+const example = factory(function InheritingButtonBasic() {
 	return (
 		<Button otherBaseMethod={() => ''} label="label" baz="foo">
 			{{ label: 'Hello' }}
 		</Button>
 	);
 });
+
+export default {
+	group: 'InheritingButton',
+	module: example,
+	overview: true
+};

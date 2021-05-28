@@ -29,11 +29,9 @@ export default factory(function Example({ properties, middleware: { theme, resiz
 	const example =
 		config.widgets &&
 		config.widgets[widgetName].find((e: any) => e.filename.toLowerCase() === exampleName);
-	return (
-		example && (
-			<div key="example-container" classes={css.container}>
-				<example.module />
-			</div>
-		)
-	);
+	return example ? (
+		<div key="example-container" classes={css.container}>
+			<example.module />
+		</div>
+	) : null;
 });

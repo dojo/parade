@@ -1,8 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Input from '../Input';
+import Input from './Input';
 
 const factory = create();
 
-export default factory(function Basic() {
+const example = factory(function InputBasic() {
 	return <Input label="Hello" value={''} onValue={() => {}} type="labeled" />;
 });
+
+export default {
+	group: 'Input',
+	overview: true,
+	module: example
+};
