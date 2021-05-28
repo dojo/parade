@@ -7,11 +7,12 @@ const ExampleDescription = create()(
 
 export default {
 	filename: 'NamedClassButton',
-	overview: {
-		example: {
+	examples: [
+		{
+			overvie: true,
 			filename: 'NamedClassButtonExample',
 			module: NamedClassButtonExample,
 			description: ExampleDescription
 		}
-	}
+	]
 };

@@ -3,6 +3,15 @@ import Button from '../Button';
 
 const factory = create();
 
-export default factory(function ButtonAdvanced() {
+const example = factory(function ButtonAdvanced() {
 	return <Button label="Advanced" baz="baz" otherBaseMethod={() => 'other'} />;
 });
+
+export default {
+	filename: 'ButtonAdvanced',
+	group: 'Button',
+	module: example,
+	sandbox: true,
+	size: 'large',
+	title: 'Button Advanced'
+};

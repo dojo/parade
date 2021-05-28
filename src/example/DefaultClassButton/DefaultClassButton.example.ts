@@ -2,10 +2,11 @@ import DefaultClassButtonExample from './examples/DefaultClassButtonExample';
 
 export default {
 	filename: 'DefaultClassButton',
-	overview: {
-		example: {
+	examples: [
+		{
+			overview: true,
 			filename: 'DefaultClassButtonExample',
 			module: DefaultClassButtonExample
 		}
-	}
+	]
 };

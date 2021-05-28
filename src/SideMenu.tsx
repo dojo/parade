@@ -14,6 +14,8 @@ const factory = create({ theme }).properties<{
 export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const { widgetName, config, onThemeChange } = properties();
 	const currentTheme = getThemeFromConfig(config);
+	const regularExamples =
+		config.widgets && config.widgets[widgetName].filter((example) => !example.overview);
 
 	return (
 		<div classes="flex flex-col justify-between overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
@@ -46,11 +48,11 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						</li>
 					)}
 				</ul>
-				{config.widgets[widgetName].examples && (
+				{regularExamples && regularExamples.length > 0 && (
 					<virtual>
 						<hr classes="hr my-1 border-b-2 border-gray-200" />
 						<ul classes="list mt-4 overflow-x-hidden">
-							{(config.widgets[widgetName].examples || []).map((example: any) => {
+							{regularExamples.map((example: any) => {
 								return (
 									<li classes="mb-2">
 										<ActiveLink

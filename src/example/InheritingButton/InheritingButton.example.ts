@@ -2,10 +2,11 @@ import InheritingButtonExample from './examples/InheritingButtonExample';
 
 export default {
 	filename: 'InheritingButton',
-	overview: {
-		example: {
+	examples: [
+		{
+			overview: true,
 			filename: 'InheritingButtonExample',
 			module: InheritingButtonExample
 		}
-	}
+	]
 };

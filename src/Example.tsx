@@ -7,6 +7,7 @@ import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInj
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import InterfaceTable from './InterfaceTable';
+import { Config } from '.';
 
 const middleware = create({ destroy, icache });
 
@@ -29,7 +30,7 @@ const factory = create({ theme, icache, postMessage }).properties<{
 	widgetExamples: any;
 	widgetProperties: any;
 	widgetThemes: any;
-	config: any;
+	config: Config;
 }>();
 
 export default factory(function Example({
@@ -58,11 +59,12 @@ export default factory(function Example({
 		}
 	});
 	const isOverview = !exampleName;
-	const example = isOverview
-		? config.widgets[widgetName].overview.example
-		: config.widgets[widgetName].examples.find(
-				(e: any) => e.filename.toLowerCase() === exampleName
-		  );
+	const example =
+		config.widgets &&
+		config.widgets[widgetName].find((e: any) =>
+			isOverview ? e.overview : e.filename.toLowerCase() === exampleName
+		);
+	if (!example) return;
 	const codesandboxPath =
 		config.codesandboxPath && config.codesandboxPath(widgetName, example.filename, themeName);
 	const examplePath = config.examplePath(widgetName, example.filename);

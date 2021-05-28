@@ -12,6 +12,7 @@ export default function(exampleFilenames: any) {
 	exampleFilenames.forEach((exampleFilename: string) => {
 		const ts = path.join(process.cwd(), exampleFilename);
 		let code = '';
+		console.log((process.cwd(), exampleFilename));
 		if (fs.existsSync(ts)) {
 			code = fs.readFileSync(ts, 'utf-8');
 		}

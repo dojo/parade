@@ -2,10 +2,11 @@ import NamedButtonExample from './examples/NamedButtonExample';
 
 export default {
 	filename: 'NamedButton',
-	overview: {
-		example: {
+	examples: [
+		{
+			overview: true,
 			filename: 'NamedButtonExample',
 			module: NamedButtonExample
 		}
-	}
+	]
 };
