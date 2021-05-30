@@ -63,56 +63,21 @@ export default {
   header: 'My Widget Library',
   codesandbox: {},
   tests,
-  themes: [ dojoTheme ],
-  widgets: {
-    button: {
-      examples: [
-        {
-          filename: 'DisabledSubmit',
-          module: DisabledSubmit,
-          title: 'Disabled Submit Button'
-        },
-        {
-          filename: 'ToggleButton',
-          module: ToggleButton,
-          title: 'Toggle Button'
-        }
-      ],
-      filename: 'index',
-      overview: {
-        example: {
-          filename: 'Basic',
-          module: BasicButton
-        }
-      }
-    }
-  }
+  themes: [ dojoTheme ]
 ```
 
 ### Example local config:
 
-#### **`accordion.example.tsx`**
+#### **`AccordionBasic.example.tsx`**
 
 ```tsx
 import dojoTheme from '@dojo/themes/dojo';
 import '@dojo/themes/dojo/index.css';
 
-import BasicAccordion from './widgets/accordion/Basic';
-import Exclusive from './widgets/accordion/Exclusive';
+import AccordionBasic from './widgets/accordion/Basic';
 
 export default {
-	examples: [
-		{
-			filename: 'Exclusive',
-			module: Exclusive
-		}
-	],
-	filename: 'index',
-	overview: {
-		example: {
-			filename: 'Basic',
-			module: BasicAccordion
-		}
-	}
+	module: AccordionBasic,
+	overview: true
 };
 ```
