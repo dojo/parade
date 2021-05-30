@@ -64,7 +64,9 @@ export default factory(function Example({
 		config.widgets[widgetName].find((e: any) =>
 			isOverview ? e.overview : e.filename.toLowerCase() === exampleName
 		);
-	if (!example) return;
+	if (!example) {
+		return;
+	}
 	const codesandboxPath =
 		config.codesandboxPath && config.codesandboxPath(widgetName, example.filename, themeName);
 	const examplePath = config.examplePath(widgetName, example.filename);

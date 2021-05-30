@@ -45,10 +45,11 @@ function getReadmeFileNames(config: Config): string[] {
 
 function getExampleFileNames(config: Config): string[] {
 	const filenames: string[] = [];
-	if (!config.widgets) return filenames;
+	if (!config.widgets) {
+		return filenames;
+	}
 	Object.keys(config.widgets).forEach((key) => {
-		if (!config.widgets) return;
-		const examples = config.widgets[key];
+		const examples = config.widgets![key];
 		examples.forEach((example) => {
 			filenames.push(config.examplePath(key, example.filename));
 		});
