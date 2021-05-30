@@ -1,53 +1,53 @@
 {
-  "name": "@dojo/parade",
-  "version": "1.0.2-pre",
-  "scripts": {
-    "dev": "dojo build app -m dev -w -s",
-    "start": "npm run dev",
-    "dist": "dojo build widget -t lib",
-    "dist:legacy": "dojo build widget -t lib --legacy",
-    "copy": "shx mkdir -p ./dist/release && shx cp -r ./output/dist/* ./dist/release/",
-    "clean": "shx rm -rf ./output/dist && shx rm -rf output",
-    "package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "release": "npm run package && dojo-release"
-  },
-  "peerDependencies": {
-    "@dojo/framework": "~7.0.0"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "5.15.3",
-    "canonical-path": "1.0.0",
-    "cldr-data": "36.0.0",
-    "postcss": "7.0.21",
-    "prismjs": "1.17.1",
-    "rehype-add-classes": "^1.0.0",
-    "rehype-stringify": "6.0.0",
-    "remark-parse": "7.0.1",
-    "remark-rehype": "5.0.0",
-    "remark-sectionize": "^1.1.0",
-    "ts-morph": "4.2.0",
-    "tslib": "~1.9.1",
-    "unified": "8.4.1"
-  },
-  "devDependencies": {
-    "@dojo/cli": "~7.0.0",
-    "@dojo/cli-build-app": "~7.0.0",
-    "@dojo/cli-build-widget": "~7.0.0",
-    "@dojo/framework": "~7.0.0",
-    "@dojo/scripts": "^4.0.2",
-    "@types/node": "~9.6.5",
-    "intern": "^4.6.0",
-    "prettier": "^1.19.1",
-    "shx": "^0.3.2",
-    "tailwindcss": "^1.1.4",
-    "typescript": "~3.4.5"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 4,
-    "useTabs": true,
-    "printWidth": 100,
-    "arrowParens": "always"
-  }
+	"name": "@dojo/parade",
+	"version": "1.0.2-pre",
+	"scripts": {
+		"dev": "dojo build app -m dev -w -s",
+		"start": "npm run dev",
+		"dist": "dojo build widget -t lib",
+		"dist:legacy": "dojo build widget -t lib --legacy",
+		"copy": "shx mkdir -p ./dist/release && shx cp -r ./output/dist/* ./dist/release/",
+		"clean": "shx rm -rf ./output/dist && shx rm -rf output",
+		"package": "npm run clean && npm run dist && npm run copy && npm run dist:legacy && npm run copy",
+		"prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+		"release": "npm run package && dojo-release"
+	},
+	"peerDependencies": {
+		"@dojo/framework": "~7.0.0"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-free": "5.15.3",
+		"canonical-path": "1.0.0",
+		"cldr-data": "36.0.0",
+		"postcss": "7.0.21",
+		"prismjs": "1.17.1",
+		"rehype-add-classes": "^1.0.0",
+		"rehype-stringify": "6.0.0",
+		"remark-parse": "7.0.1",
+		"remark-rehype": "5.0.0",
+		"remark-sectionize": "^1.1.0",
+		"ts-morph": "4.2.0",
+		"tslib": "~1.9.1",
+		"unified": "8.4.1"
+	},
+	"devDependencies": {
+		"@dojo/cli": "~7.0.0",
+		"@dojo/cli-build-app": "~7.0.0",
+		"@dojo/cli-build-widget": "~7.0.0",
+		"@dojo/framework": "~7.0.0",
+		"@dojo/scripts": "^4.0.2",
+		"@types/node": "~9.6.5",
+		"intern": "^4.6.0",
+		"prettier": "^1.19.1",
+		"shx": "^0.3.2",
+		"tailwindcss": "^1.1.4",
+		"typescript": "~3.4.5"
+	},
+	"prettier": {
+		"singleQuote": true,
+		"tabWidth": 4,
+		"useTabs": true,
+		"printWidth": 100,
+		"arrowParens": "always"
+	}
 }

@@ -26,16 +26,12 @@ export default factory(function Example({ properties, middleware: { theme, resiz
 	if (height) {
 		parent.postMessage(JSON.stringify({ height: `${height}px` }), '*');
 	}
-	const isOverview =
-		config.widgets[widgetName].overview.example.filename.toLowerCase() === exampleName;
-	const example = isOverview
-		? config.widgets[widgetName].overview.example
-		: config.widgets[widgetName].examples.find(
-				(e: any) => e.filename.toLowerCase() === exampleName
-		  );
-	return (
+	const example =
+		config.widgets &&
+		config.widgets[widgetName].find((e: any) => e.filename.toLowerCase() === exampleName);
+	return example ? (
 		<div key="example-container" classes={css.container}>
 			<example.module />
 		</div>
-	);
+	) : null;
 });

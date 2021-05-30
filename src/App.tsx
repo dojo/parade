@@ -19,18 +19,21 @@ import getTheme from './theme.block';
 import code from './code.block';
 
 import '@fortawesome/fontawesome-free/css/all.css';
+import { Config } from '.';
 
-function getWidgetFileNames(config: any): { [index: string]: string } {
+function getWidgetFileNames(config: Config): { [index: string]: string } {
+	if (!config.widgets) return {};
 	return Object.keys(config.widgets).reduce((newConfig, widget) => {
 		return {
 			...newConfig,
-			[widget]: config.widgetPath(widget, config.widgets[widget].filename)
+			[widget]: config.widgetPath(widget)
 		};
 	}, {});
 }
 
-function getReadmeFileNames(config: any): string[] {
+function getReadmeFileNames(config: Config): string[] {
 	const filenames: string[] = [];
+	if (!config.widgets) return filenames;
 	Object.keys(config.widgets).forEach((key) => {
 		filenames.push(config.readmePath(key));
 	});
@@ -40,18 +43,16 @@ function getReadmeFileNames(config: any): string[] {
 	return filenames;
 }
 
-function getExampleFileNames(config: any): string[] {
+function getExampleFileNames(config: Config): string[] {
 	const filenames: string[] = [];
+	if (!config.widgets) {
+		return filenames;
+	}
 	Object.keys(config.widgets).forEach((key) => {
-		const widget = config.widgets[key];
-		if (widget.overview && widget.overview.example) {
-			filenames.push(config.examplePath(key, widget.overview.example.filename));
-		}
-		if (widget.examples) {
-			widget.examples.forEach((example: any) => {
-				filenames.push(config.examplePath(key, example.filename));
-			});
-		}
+		const examples = config.widgets![key];
+		examples.forEach((example) => {
+			filenames.push(config.examplePath(key, example.filename));
+		});
 	});
 	return filenames;
 }
@@ -69,7 +70,6 @@ export default factory(function App({ properties, middleware: { block, icache, t
 		window.location.search = `theme=${label}`;
 		theme.set(newTheme);
 	};
-
 	const widgetReadmeContent = isCodeSandbox ? {} : block(readme)(readmeFilenames) || {};
 	const widgetExampleContent = isCodeSandbox ? {} : block(code)(exampleFilenames) || {};
 	const widgetProperties = isCodeSandbox ? {} : block(getWidgetProperties)(widgetFilenames) || {};

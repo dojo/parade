@@ -21,18 +21,13 @@ export interface WidgetExampleConfig {
 	filename: string;
 	module: any;
 	title?: string;
-	description?: string;
+	description?: any;
 	size?: string;
 	sandbox?: boolean;
+	overview?: true;
 }
 
-export interface WidgetConfig {
-	filename?: string;
-	overview: {
-		example: WidgetExampleConfig;
-	};
-	examples?: WidgetExampleConfig[];
-}
+export type WidgetConfigMap = { [index: string]: WidgetExampleConfig[] };
 
 export interface Config {
 	name: string;
@@ -40,10 +35,10 @@ export interface Config {
 	tests?: any;
 	home: string;
 	readmePath: (widget: string) => string;
-	widgetPath: (widget: string, filename: string) => string;
+	widgetPath: (widget: string) => string;
 	examplePath: (widget: string, filename: string) => string;
 	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
-	widgets: { [index: string]: WidgetConfig };
+	widgets?: WidgetConfigMap;
 }
 
 export default ({ config }: { config: Config }) => {

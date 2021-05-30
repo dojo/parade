@@ -4,6 +4,7 @@ import theme from '@dojo/framework/core/middleware/theme';
 import ActiveLink from './ActiveLink';
 import { Config } from '.';
 import { getThemeFromConfig } from './utils';
+import { basename, extname } from 'path';
 
 const factory = create({ theme }).properties<{
 	widgetName: string;
@@ -11,9 +12,15 @@ const factory = create({ theme }).properties<{
 	onThemeChange: (theme: string) => void;
 }>();
 
+function cleanExampleName(filename: string) {
+	return basename(basename(filename, extname(filename)), '.example').toLowerCase();
+}
+
 export default factory(function SideBar({ properties, middleware: { theme } }) {
 	const { widgetName, config, onThemeChange } = properties();
 	const currentTheme = getThemeFromConfig(config);
+	const regularExamples =
+		config.widgets && config.widgets[widgetName].filter((example) => !example.overview);
 
 	return (
 		<div classes="flex flex-col justify-between overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
@@ -46,11 +53,11 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 						</li>
 					)}
 				</ul>
-				{config.widgets[widgetName].examples && (
+				{regularExamples && regularExamples.length > 0 && (
 					<virtual>
 						<hr classes="hr my-1 border-b-2 border-gray-200" />
 						<ul classes="list mt-4 overflow-x-hidden">
-							{(config.widgets[widgetName].examples || []).map((example: any) => {
+							{regularExamples.map((example: any) => {
 								return (
 									<li classes="mb-2">
 										<ActiveLink
@@ -59,11 +66,11 @@ export default factory(function SideBar({ properties, middleware: { theme } }) {
 											to="example"
 											params={{
 												widget: widgetName,
-												example: example.filename.toLowerCase()
+												example: cleanExampleName(example.filename)
 											}}
 											activeClasses={['font-bold']}
 										>
-											{example.filename.replace(/([A-Z])/g, ' $1').trim()}
+											{example.title.replace(/([A-Z])/g, ' $1').trim()}
 										</ActiveLink>
 									</li>
 								);
