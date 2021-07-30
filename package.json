@@ -13,7 +13,7 @@
 		"release": "npm run package && dojo-release"
 	},
 	"peerDependencies": {
-		"@dojo/framework": "8.0.0-rc.1"
+		"@dojo/framework": "~8.0.0"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
@@ -31,10 +31,10 @@
 		"unified": "8.4.1"
 	},
 	"devDependencies": {
-		"@dojo/cli": "8.0.0-rc.1",
-		"@dojo/cli-build-app": "8.0.0-rc.1",
-		"@dojo/cli-build-widget": "8.0.0-rc.1",
-		"@dojo/framework": "8.0.0-rc.1",
+		"@dojo/cli": "~8.0.0",
+		"@dojo/cli-build-app": "~8.0.0",
+		"@dojo/cli-build-widget": "~8.0.0",
+		"@dojo/framework": "~8.0.0",
 		"@dojo/scripts": "^4.0.2",
 		"@types/node": "~9.6.5",
 		"intern": "^4.6.0",
