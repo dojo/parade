@@ -2,13 +2,13 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 
 import ActiveLink from './ActiveLink';
-import { Config } from '.';
+import { TransformedConfig } from '.';
 import { getThemeFromConfig } from './utils';
 import { basename, extname } from 'path';
 
 const factory = create({ theme }).properties<{
 	widgetName: string;
-	config: Config;
+	config: TransformedConfig;
 	onThemeChange: (theme: string) => void;
 }>();
 
@@ -16,7 +16,7 @@ function cleanExampleName(filename: string) {
 	return basename(basename(filename, extname(filename)), '.example').toLowerCase();
 }
 
-export default factory(function SideBar({ properties, middleware: { theme } }) {
+export default factory(function SideBar({ properties }) {
 	const { widgetName, config, onThemeChange } = properties();
 	const currentTheme = getThemeFromConfig(config);
 	const regularExamples =

@@ -19,9 +19,9 @@ import getTheme from './theme.block';
 import code from './code.block';
 
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Config } from '.';
+import { TransformedConfig } from '.';
 
-function getWidgetFileNames(config: Config): { [index: string]: string } {
+function getWidgetFileNames(config: TransformedConfig): { [index: string]: string } {
 	if (!config.widgets) return {};
 	return Object.keys(config.widgets).reduce((newConfig, widget) => {
 		return {
@@ -31,7 +31,7 @@ function getWidgetFileNames(config: Config): { [index: string]: string } {
 	}, {});
 }
 
-function getReadmeFileNames(config: Config): string[] {
+function getReadmeFileNames(config: TransformedConfig): string[] {
 	const filenames: string[] = [];
 	if (!config.widgets) return filenames;
 	Object.keys(config.widgets).forEach((key) => {
@@ -43,7 +43,7 @@ function getReadmeFileNames(config: Config): string[] {
 	return filenames;
 }
 
-function getExampleFileNames(config: Config): string[] {
+function getExampleFileNames(config: TransformedConfig): string[] {
 	const filenames: string[] = [];
 	if (!config.widgets) {
 		return filenames;
