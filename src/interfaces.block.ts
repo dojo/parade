@@ -34,16 +34,19 @@ function format(prop: MethodSignature | PropertySignature | PropertyAssignment):
 		name: prop.getName(),
 		type: prop.getType().getText(prop),
 		optional: prop.hasQuestionToken() || false,
-		description: (prop as PropertySignature).getJsDocs ? (
-			(prop as PropertySignature).getJsDocs()[0] && (prop as PropertySignature).getJsDocs()[0].getComment()
-		) : (
-			(prop as PropertyAssignment).getInitializerIfKind(SyntaxKind.StringLiteral) &&
-			(prop as PropertyAssignment).getInitializerIfKind(SyntaxKind.StringLiteral)!.getLiteralValue()
-		)
+		description: (prop as PropertySignature).getJsDocs
+			? (prop as PropertySignature).getJsDocs()[0] &&
+			  (prop as PropertySignature).getJsDocs()[0].getComment()
+			: (prop as PropertyAssignment).getInitializerIfKind(SyntaxKind.StringLiteral) &&
+			  (prop as PropertyAssignment)
+					.getInitializerIfKind(SyntaxKind.StringLiteral)!
+					.getLiteralValue()
 	};
 }
 
-function isSignatureOrAssignment(node: any): node is MethodSignature | PropertySignature | PropertyAssignment {
+function isSignatureOrAssignment(
+	node: any
+): node is MethodSignature | PropertySignature | PropertyAssignment {
 	return Boolean(node && node.getName && node.getType && node.hasQuestionToken);
 }
 
@@ -80,27 +83,33 @@ function getTypeFromFactory(factory: CallExpression, children = false) {
 
 function parseI18n(node: CallExpression) {
 	const propertyAccess = node.getChildAtIndex(0);
-	const functionSymbol = propertyAccess &&
+	const functionSymbol =
+		propertyAccess &&
 		propertyAccess.getKind() === SyntaxKind.PropertyAccessExpression &&
 		propertyAccess.getSymbol();
 	const functionType = functionSymbol && functionSymbol.getTypeAtLocation(node);
 	const callType = functionType && functionType.getCallSignatures()[0];
-	const argument = callType && callType.getParameters()[0]
+	const argument = callType && callType.getParameters()[0];
 	const parameterType = argument && argument.getTypeAtLocation(node);
 	const parameterSymbol = parameterType && parameterType.getSymbol();
 	const parameterSymbolName = parameterSymbol && parameterSymbol.getName();
 	const returnType = callType && callType.getReturnType();
 	const returnAliasSymbol = returnType && returnType.getAliasSymbol();
 	const returnAliasName = returnAliasSymbol && returnAliasSymbol.getName();
-	if (parameterType && parameterSymbolName === 'Bundle' && returnAliasName === 'LocalizedMessages') {
-		const argument = node.getArguments()[0]
+	if (
+		parameterType &&
+		parameterSymbolName === 'Bundle' &&
+		returnAliasName === 'LocalizedMessages'
+	) {
+		const argument = node.getArguments()[0];
 		const argumentType = argument && argument.getType();
 		const messages = argumentType && argumentType.getProperty('messages');
 		const locales = argumentType && argumentType.getProperty('locales');
 		const messageProps = messages && messages.getTypeAtLocation(node);
 		const localeProps = locales && locales.getTypeAtLocation(node);
 		return {
-			messages: messageProps && getPropertyDetails(messageProps), locales: localeProps && getPropertyDetails(localeProps)
+			messages: messageProps && getPropertyDetails(messageProps),
+			locales: localeProps && getPropertyDetails(localeProps)
 		};
 	}
 
@@ -164,7 +173,8 @@ export default function(config: { [index: string]: string }) {
 
 						if (typeArguments.length) {
 							const widgetSymbol = typeArguments[0].getChildAtIndex(0).getSymbol();
-							const widgetChildrenSymbol = typeArguments[1] && typeArguments[1].getChildAtIndex(0).getSymbol();
+							const widgetChildrenSymbol =
+								typeArguments[1] && typeArguments[1].getChildAtIndex(0).getSymbol();
 
 							if (widgetSymbol) {
 								propsType = widgetSymbol.getDeclaredType();
@@ -179,19 +189,19 @@ export default function(config: { [index: string]: string }) {
 			} else if (node.getKind() === SyntaxKind.ExportAssignment) {
 				initializer = (node as ExportAssignment).getExpression();
 			} else if (node.getKind() === SyntaxKind.CallExpression) {
-				const parsedI18n = parseI18n(node as CallExpression)
+				const parsedI18n = parseI18n(node as CallExpression);
 				if (parsedI18n.messages) {
 					messages.push(...parsedI18n.messages);
 				}
 
-				if(parsedI18n.locales) {
+				if (parsedI18n.locales) {
 					locales = parsedI18n.locales;
 				}
 			}
 
 			if (initializer && initializer.getKind() === SyntaxKind.CallExpression) {
 				propsType = getTypeFromFactory(initializer);
-				childrenType  = getTypeFromFactory(initializer, true);
+				childrenType = getTypeFromFactory(initializer, true);
 			}
 		});
 
@@ -247,14 +257,19 @@ export default function(config: { [index: string]: string }) {
 		if (unionTypes && unionTypes.length) {
 			unionTypes.forEach((unionType) => {
 				const unionProperties = getPropertyDetails(unionType);
-				unionProperties.forEach(type => parseUnionType(type, properties));
+				unionProperties.forEach((type) => parseUnionType(type, properties));
 			});
 		}
 		childUnionTypes.forEach((unionType) => {
 			const text = unionType.getText(undefined, TypeFormatFlags.None);
-			if (unionType.isArray() || !unionType.isObject() || (
-				text && (text.startsWith('WNode') || text.startsWith('VNode') || text.startsWith('DNode'))
-			)) {
+			if (
+				unionType.isArray() ||
+				!unionType.isObject() ||
+				(text &&
+					(text.startsWith('WNode') ||
+						text.startsWith('VNode') ||
+						text.startsWith('DNode')))
+			) {
 				children.push({
 					name: '----',
 					type: text,
@@ -262,7 +277,7 @@ export default function(config: { [index: string]: string }) {
 				});
 			} else {
 				const callSignatures = unionType.getCallSignatures();
-				callSignatures.forEach(signature => {
+				callSignatures.forEach((signature) => {
 					children.push({
 						name: '----',
 						type: signature.getDeclaration().getFullText(),
@@ -270,7 +285,7 @@ export default function(config: { [index: string]: string }) {
 					});
 				});
 				const unionProperties = getPropertyDetails(unionType);
-				unionProperties.forEach(type => parseUnionType(type, children));
+				unionProperties.forEach((type) => parseUnionType(type, children));
 			}
 		});
 

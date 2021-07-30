@@ -35,16 +35,16 @@ export default factory(function InterfaceTable({ properties }) {
 							<th classes="px-4 py-2 border-r border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100 rounded-tl-lg">
 								Name
 							</th>
-							{showTypes &&
-							<th classes="px-4 py-2 border-r border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100">
-								Type
-							</th>
-							}
-							{showComments &&
+							{showTypes && (
+								<th classes="px-4 py-2 border-r border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100">
+									Type
+								</th>
+							)}
+							{showComments && (
 								<th classes="px-4 py-2 border-b border-gray-400 text-sm font-semibold text-gray-700 p-2 bg-gray-100 rounded-tr-lg">
 									{descriptionLabel}
 								</th>
-							}
+							)}
 						</tr>
 					</thead>
 					<tbody>
@@ -55,7 +55,9 @@ export default factory(function InterfaceTable({ properties }) {
 										prop.optional ? '?' : ''
 									}`}</td>
 									{showTypes && <td classes="px-4 py-2 text-sm">{prop.type}</td>}
-									{showComments && <td classes="px-4 py-2 text-sm">{prop.description}</td>}
+									{showComments && (
+										<td classes="px-4 py-2 text-sm">{prop.description}</td>
+									)}
 								</tr>
 							);
 						})}

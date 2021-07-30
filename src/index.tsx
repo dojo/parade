@@ -42,7 +42,7 @@ export interface Config {
 }
 
 export default ({ config }: { config: Config }) => {
-	const { themes, tests } = config;
+	const { tests } = config;
 	if (global.intern && tests && tests.keys) {
 		const url = new URL(window.location.href);
 		const params = url.searchParams;
