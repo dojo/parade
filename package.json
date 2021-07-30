@@ -20,7 +20,7 @@
 		"canonical-path": "1.0.0",
 		"cldr-data": "36.0.0",
 		"postcss": "7.0.21",
-		"prismjs": "1.17.1",
+		"prismjs": "1.24.0",
 		"rehype-add-classes": "^1.0.0",
 		"rehype-stringify": "6.0.0",
 		"remark-parse": "7.0.1",
