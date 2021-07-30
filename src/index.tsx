@@ -35,7 +35,7 @@ export interface WidgetExampleConfig {
 	overview?: true;
 }
 
-export type WidgetConfigMap = { [index: string]: WidgetExampleConfig[] | WidgetConfig };
+export type WidgetConfigMap = { [index: string]: WidgetExampleConfig[] };
 
 export interface Config {
 	name: string;
@@ -46,7 +46,7 @@ export interface Config {
 	widgetPath: (widget: string) => string;
 	examplePath: (widget: string, filename: string) => string;
 	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
-	widgets?: WidgetConfigMap;
+	widgets?: { [index: string]: WidgetExampleConfig[] | WidgetConfig };
 }
 
 export interface TransformedConfig {
@@ -58,7 +58,7 @@ export interface TransformedConfig {
 	widgetPath: (widget: string) => string;
 	examplePath: (widget: string, filename: string) => string;
 	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
-	widgets?: { [index: string]: WidgetExampleConfig[] };
+	widgets?: WidgetConfigMap;
 }
 
 export default ({ config }: { config: Config }) => {

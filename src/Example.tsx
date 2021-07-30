@@ -7,7 +7,7 @@ import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInj
 import HorizontalRule from './HorizontalRule';
 import ThemeTable from './ThemeTable';
 import InterfaceTable from './InterfaceTable';
-import { Config } from '.';
+import { TransformedConfig } from '.';
 
 const middleware = create({ destroy, icache });
 
@@ -30,7 +30,7 @@ const factory = create({ theme, icache, postMessage }).properties<{
 	widgetExamples: any;
 	widgetProperties: any;
 	widgetThemes: any;
-	config: Config;
+	config: TransformedConfig;
 }>();
 
 export default factory(function Example({

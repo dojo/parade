@@ -1,4 +1,4 @@
-import parade, { Config, WidgetConfigMap } from './index';
+import parade, { TransformedConfig, WidgetConfigMap } from './index';
 import baseConfig from './example/config';
 import { basename, extname } from 'path';
 
@@ -12,7 +12,7 @@ const widgetConfig = getLocalConfig.keys().reduce((configMap: WidgetConfigMap, i
 	return configMap;
 }, {});
 
-const config: Config = {
+const config: TransformedConfig = {
 	...baseConfig,
 	widgets: {
 		...baseConfig.widgets,
