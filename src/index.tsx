@@ -17,6 +17,14 @@ export interface ConfigThemes {
 	theme: Theme | ThemeWithVariants;
 }
 
+export interface WidgetConfig {
+	filename?: string;
+	overview: {
+		example: WidgetExampleConfig;
+	};
+	examples?: WidgetExampleConfig[];
+}
+
 export interface WidgetExampleConfig {
 	filename: string;
 	module: any;
@@ -27,7 +35,7 @@ export interface WidgetExampleConfig {
 	overview?: true;
 }
 
-export type WidgetConfigMap = { [index: string]: WidgetExampleConfig[] };
+export type WidgetConfigMap = { [index: string]: WidgetExampleConfig[] | WidgetConfig };
 
 export interface Config {
 	name: string;
@@ -41,7 +49,34 @@ export interface Config {
 	widgets?: WidgetConfigMap;
 }
 
+export interface TransformedConfig {
+	name: string;
+	themes: ConfigThemes[];
+	tests?: any;
+	home: string;
+	readmePath: (widget: string) => string;
+	widgetPath: (widget: string) => string;
+	examplePath: (widget: string, filename: string) => string;
+	codesandboxPath?: (widget: string, filename: string, themeName?: string) => string;
+	widgets?: { [index: string]: WidgetExampleConfig[] };
+}
+
 export default ({ config }: { config: Config }) => {
+	if (config.widgets && Object.keys(config.widgets).length) {
+		config.widgets = Object.keys(config.widgets).reduce((transformedConfig, key) => {
+			const widgetConfig = config.widgets![key];
+			if (Array.isArray(widgetConfig)) {
+				transformedConfig[key] = widgetConfig;
+			} else {
+				transformedConfig[key] = [{ ...widgetConfig.overview.example, overview: true }];
+				if (widgetConfig.examples) {
+					transformedConfig[key] = [...transformedConfig[key], ...widgetConfig.examples];
+				}
+			}
+			return transformedConfig;
+		}, {} as { [index: string]: WidgetExampleConfig[] });
+	}
+
 	const { tests } = config;
 	if (global.intern && tests && tests.keys) {
 		const url = new URL(window.location.href);
